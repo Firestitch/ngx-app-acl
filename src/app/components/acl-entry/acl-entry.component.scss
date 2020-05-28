@@ -1,0 +1,13 @@
+::ng-deep .account-roles-autocomplete-panel {
+  .mat-option {
+    line-height: normal;
+    .mat-option-text {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      fs-badge {
+        margin-right: 5px;
+      }
+    }
+  }
+}

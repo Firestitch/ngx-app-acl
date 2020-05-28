@@ -1,1 +1,22 @@
-<fs-component></fs-component>
+<h1>ACL Roles</h1>
+<fs-acl-roles
+  [loadAclRoles]="loadAclRoles"
+  [loadAclRole]="loadAclRole"
+  [deleteAclRole]="deleteAclRole"
+  [saveAclRole]="saveAclRole">
+</fs-acl-roles>
+
+<h1>ACL Entries</h1>
+<fs-acl-entries
+  [loadAclEntries]="loadAclEntries"
+  [loadAclRoles]="loadAclEntriesRoles"
+  [saveAclObjectEntry]="saveAclObjectEntry">
+</fs-acl-entries>
+
+<h1>ACL Object Roles</h1>
+<form>
+  <fs-acl-object-roles
+    [aclRoles]="aclRoles"
+    [aclObjectRoles]="[aclObjectRole]">
+  </fs-acl-object-roles>
+</form>

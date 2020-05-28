@@ -1,0 +1,10 @@
+
+<fs-popover [template]="popover" maxWidth="400">
+  <ng-content></ng-content>
+</fs-popover>
+
+<ng-template #popover>
+  {{permission.name}}
+  <div class="small">{{description}}</div>
+</ng-template>
+

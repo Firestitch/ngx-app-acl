@@ -1,0 +1,46 @@
+
+<fs-list [config]="aclEntriesConfig">
+  <fs-list-column>
+    <ng-template fs-list-header>Context</ng-template>
+    <ng-template fs-list-cell let-row="row">
+
+      <div
+        *ngIf="row.object; else elseObject"
+        fxLayout="row"
+        fxLayoutAlign="start center"
+        fxLayoutGap="10px">
+          <fs-badge *ngIf="row.object.imageUrl" shape="circle" image="{{ row.object.imageUrl }}"></fs-badge>
+          <span>
+            <small>{{ row.object.className }}</small>
+            <div>{{ row.object.name }}</div>
+          </span>
+      </div>
+
+      <ng-template #elseObject>
+        Global
+      </ng-template>
+    </ng-template>
+  </fs-list-column>
+
+  <fs-list-column>
+    <ng-template fs-list-header>Roles</ng-template>
+    <ng-template fs-list-cell let-row="row">
+      <div fxLayout="column" fxLayoutGap="10px">
+
+        <div div class="small" *ngFor="let aclEntry of row.aclEntries">
+          <ng-container [ngSwitch]="row.level">
+            <ng-container *ngSwitchCase="'app'">
+              <fs-acl-role-popover [aclRole]="aclEntry.aclRole" objectName="App">{{aclEntry.aclRole.name}}: App</fs-acl-role-popover>
+            </ng-container>
+            <ng-container *ngSwitchDefault>
+              <ng-container *ngIf="row.object">
+                <fs-acl-role-popover [aclRole]="aclEntry.aclRole">{{aclEntry.aclRole.name}}</fs-acl-role-popover>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </div>
+
+      </div>
+    </ng-template>
+  </fs-list-column>
+</fs-list>

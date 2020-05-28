@@ -1,1 +1,1 @@
-export * from './fs-component.service';
+export * from './app-acl.service';

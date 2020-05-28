@@ -1,0 +1,49 @@
+:host {
+
+  .permissions {
+
+    ::ng-deep {
+
+      .fs-list-row-group {
+        background-color: #f6f6f6;
+      }
+
+      fs-list .access {
+        white-space: nowrap;
+      }
+
+      .mat-form-field {
+
+        width: 100px;
+
+        .mat-form-field-wrapper {
+          padding-bottom: 0;
+        }
+
+        .mat-form-field-infix {
+          border-top: 0;
+        }
+
+        .mat-form-field-underline {
+          bottom: 0;
+        }
+      }
+    }
+  }
+
+  ::ng-deep {
+
+    fs-radio-group {
+      width: 100%;
+    }
+
+    fs-label-field {
+      width: 100%;
+    }
+
+  }
+
+  .level {
+    width: 100%;
+  }
+}

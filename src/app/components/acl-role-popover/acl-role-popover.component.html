@@ -1,0 +1,20 @@
+
+<fs-popover [template]="popover" maxWidth="400">
+  <ng-content></ng-content>
+</fs-popover>
+
+<ng-template #popover>
+  <div class="name small">{{aclRole.name}}<span *ngIf="objectName">: {{objectName}}</span></div>
+
+  <ng-container *ngIf="permissions.length; else nonePermission">
+    <div *ngFor="let permission of permissions" class="permission">
+      <div>{{permission.name}}</div>
+      <div class="small">{{permission.description}}</div>
+    </div>
+  </ng-container>
+
+  <ng-template #nonePermission>
+    None
+  </ng-template>
+</ng-template>
+

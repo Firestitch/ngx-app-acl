@@ -1,0 +1,123 @@
+<form fsForm [submit]="save">
+  <fs-dialog>
+    <ng-container *ngIf="aclRole">
+      <div mat-dialog-title>{{ aclRole.id ? 'Edit' : 'Create' }} Role</div>
+      <mat-dialog-content>
+        <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="40px" fxLayoutGap.lt-md="0">
+          <div fxLayout="column" fxFlex fxFlex.lt-md="0">
+            <mat-form-field>
+              <input matInput placeholder="Name" [(ngModel)]="aclRole.name" name="name" fsFormRequired>
+            </mat-form-field>
+
+            <fs-label-field *ngIf="aclRole.id; else level">
+              <fs-label>Level</fs-label>
+              {{indexedAclLevels[aclRole.level]}}
+            </fs-label-field>
+
+            <ng-template #level>
+              <div class="level">
+                <fs-radio-group
+                  [(ngModel)]="aclRole.level"
+                  (ngModelChange)="levelChange()"
+                  fsFormRequired
+                  label="Level"
+                  orientation="vertical"
+                  name="level">
+                  <mat-radio-button
+                    *ngFor="let item of aclLevels"
+                    [value]="item.value"
+                    [disabled]="!!aclRole.protected">
+                      {{ item.name }}
+                  </mat-radio-button>
+                </fs-radio-group>
+              </div>
+            </ng-template>
+
+            <fs-label-field *ngIf="levelPermissions.length">
+              <fs-label>All Permissions</fs-label>
+              <mat-checkbox
+                [(ngModel)]="aclRole.allPermissions"
+                (ngModelChange)="allPermissionsChange($event)"
+                [disabled]="!!aclRole.protected"
+                name="allPermissions">
+              </mat-checkbox>
+            </fs-label-field>
+
+            <div fxLayout="column" *ngFor="let config of levelAclRoleConfigs">
+              <fs-label-field *ngIf="config.interface === 'checkbox'">
+                <fs-label>{{config.name}}</fs-label>
+                <mat-checkbox
+                  [(ngModel)]="config.data"
+                  [name]="config.name">
+                </mat-checkbox>
+                <fs-label-message>
+                  <mat-hint>{{config.description}}</mat-hint>
+                </fs-label-message>
+              </fs-label-field>
+
+              <mat-form-field *ngIf="config.interface === 'select'">
+                <mat-select
+                  [(ngModel)]="config.data"
+                  [name]="config.value"
+                  [required]="config.required"
+                  [placeholder]="config.name">
+                    <mat-option
+                      *ngFor="let item of config.values"
+                      [value]="item.value">
+                        {{ item.name }}
+                    </mat-option>
+                </mat-select>
+                <mat-hint>{{config.description}}</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div fxLayout="column" fxFlex="65" fxFlex.lt-md="0" *ngIf="aclRole.level" [hidden]="!levelPermissions.length" class="permissions">
+
+            <fs-list [config]="listConfig">
+              <fs-list-column title="Permissions">
+                <ng-template colspan="2" fs-list-group-cell let-row="row" class="permission-group">
+                  <small><b>{{row.category || 'General'}}</b></small>
+                </ng-template>
+                <ng-template fs-list-cell let-permission="row">
+                  <div class="permission">{{ permission.name }}</div>
+                  <div class="description small">{{ permission.description }}</div>
+                </ng-template>
+              </fs-list-column>
+              <fs-list-column title="Access" width="1%" class="access">
+                <ng-template fs-list-cell let-row="permission" let-permission="row">
+                  <span *ngIf="aclRole.allPermissions; else elseAll">
+                    {{ indexedAccesses[aclRole.permissions[permission.value]] }}
+                  </span>
+
+                  <ng-template #elseAll>
+
+                    <mat-form-field>
+                      <mat-select
+                        [(ngModel)]="aclRole.permissions[permission.value]"
+                        [disabled]="!!aclRole.protected"
+                        fsFormRequired
+                        name="access-{{ permission.value }}">
+                        <ng-container *ngFor="let access of AclRoleAccesses">
+                          <mat-option
+                            *ngIf="access.value === 0 || permission.accesses.indexOf(access.value) !== -1"
+                            [value]="access.value">
+                              {{ access.name }}
+                          </mat-option>
+                        </ng-container>
+                      </mat-select>
+                    </mat-form-field>
+                  </ng-template>
+                </ng-template>
+              </fs-list-column>
+            </fs-list>
+          </div>
+        </div>
+      </mat-dialog-content>
+      <mat-dialog-actions>
+        <button mat-button type="submit" color="primary">{{ aclRole.id ? 'Save' : 'Create' }}</button>
+        <button mat-button [mat-dialog-close]="null" type="button">Cancel</button>
+      </mat-dialog-actions>
+    </ng-container>
+  </fs-dialog>
+</form>

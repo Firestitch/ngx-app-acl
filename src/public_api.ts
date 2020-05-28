@@ -1,7 +1,7 @@
-/*
- * Public API Surface of fs-menu
- */
+export { FsAppAclModule } from './app/fs-app-acl.module';
 
-export { FsComponentModule } from './app/fs-component.module';
+export { FsAclRolesComponent } from './app/components/acl-roles/acl-roles.component';
 
-export { FsComponentComponent } from './app/components/component/component.component';
+export * from './app/services';
+export * from './app/interfaces';
+export * from './app/injectors';

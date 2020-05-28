@@ -1,0 +1,11 @@
+.name {
+  padding-bottom: 10px;
+}
+
+.permission + .permission {
+  padding-top: 5px;
+}
+
+:host {
+  cursor: pointer;
+}
