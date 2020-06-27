@@ -9,12 +9,12 @@
               <input matInput placeholder="Name" [(ngModel)]="aclRole.name" name="name" fsFormRequired>
             </mat-form-field>
 
-            <fs-label-field *ngIf="aclRole.id; else level">
+            <fs-label-field *ngIf="aclRole.id || aclLevels.length === 1; else levels">
               <fs-label>Level</fs-label>
               {{indexedAclLevels[aclRole.level]}}
             </fs-label-field>
 
-            <ng-template #level>
+            <ng-template #levels>
               <div class="level">
                 <fs-radio-group
                   [(ngModel)]="aclRole.level"

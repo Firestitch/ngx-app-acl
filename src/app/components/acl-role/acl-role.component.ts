@@ -23,7 +23,6 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
 
   public aclRole: AclRole = null;
   public environment;
-
   public permissions: any[] = [];
   public listConfig: FsListConfig;
   public levelPermissions = [];
@@ -49,58 +48,53 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
     forkJoin(
       this.getRole(),
       this._appAclService.getPermissions(),
-      this._appAclService.getLevels(),
-      this._appAclService.getIndexedLevels(),
     )
       .pipe(takeUntil(this._destroy$))
       .subscribe(([
         aclRole,
         aclPermissions,
-        aclLevels,
-        indexedLevels
       ]) => {
 
-          this.permissions = aclPermissions;
+        this.permissions = aclPermissions;
+        this.aclLevels = this._data.aclLevels;
 
-          this.aclLevels = aclLevels;
-          this.indexedAclLevels = indexedLevels;
-          this.indexedAccesses = list(AclRoleAccesses, 'name', 'value');
+        this.indexedAclLevels = list(this.aclLevels, 'name', 'value');
+        this.indexedAccesses = list(AclRoleAccesses, 'name', 'value');
 
-          this.aclRole = {
-            ...{
-              aclPermissions: [],
-              allPermissions: true,
-              aclRoleConfigs: [],
-              permissions: {},
-              level: this.aclLevels[0].value,
-            },
-            ...aclRole,
-          };
+        this.aclRole = {
+          ...{
+            aclPermissions: [],
+            allPermissions: true,
+            aclRoleConfigs: [],
+            permissions: {},
+            level: this.aclLevels[0].value,
+          },
+          ...aclRole,
+        };
 
-          if (this.aclRole.id) {
-            this.permissions.forEach((permission) => {
-              let access = 0;
+        if (this.aclRole.id) {
+          this.permissions.forEach((permission) => {
+            let access = 0;
 
-              const aclPermission = this.aclRole.aclPermissions.find((item) => {
-                return item.permission === permission.value;
-              });
-
-              if (aclPermission) {
-                access = aclPermission.access;
-              }
-
-              this.aclRole.permissions[permission.value] = access;
+            const aclPermission = this.aclRole.aclPermissions.find((item) => {
+              return item.permission === permission.value;
             });
-          }
 
-          if (this.aclRole.allPermissions) {
-            this._applyMaxPermissionAccess();
-          }
+            if (aclPermission) {
+              access = aclPermission.access;
+            }
 
-          this._updatePermissions();
-          this._updateAclRoleConfigs();
+            this.aclRole.permissions[permission.value] = access;
+          });
+        }
 
-    });
+        if (this.aclRole.allPermissions) {
+          this._applyMaxPermissionAccess();
+        }
+
+        this._updatePermissions();
+        this._updateAclRoleConfigs();
+      });
 
     this.listConfig = {
       status: false,

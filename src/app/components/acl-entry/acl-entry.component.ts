@@ -67,7 +67,6 @@ export class FsAclEntryComponent implements OnInit {
 
         this.aclObjectRole = {
           object: this.aclObjectEntry.object,
-          level: this.aclObjectEntry.level,
           aclRoles: this.aclObjectEntry.aclEntries
                     .map((aclEntry: AclEntry) => {
                       return aclEntry.aclRole;

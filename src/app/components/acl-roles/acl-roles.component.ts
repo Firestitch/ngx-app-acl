@@ -57,11 +57,12 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
             observer.complete();
           });
       }
-    }).subscribe((aclLevels: AclLevel[]) => {
-      this.aclLevels = aclLevels;
-      this.indexedAclRoleLevels = list(this.aclLevels, 'name', 'value');
-      this._loadListConfig();
-    });
+    })
+      .subscribe((aclLevels: AclLevel[]) => {
+        this.aclLevels = aclLevels;
+        this.indexedAclRoleLevels = list(this.aclLevels, 'name', 'value');
+        this._loadListConfig();
+      });
   }
 
   public openDialog(aclRole: AclRole = { id: null }): void {
@@ -126,24 +127,24 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
         },
       ],
       rowActions: [
-      {
-        click: (data) => {
-          return this.deleteAclRole(data);
+        {
+          click: (data) => {
+            return this.deleteAclRole(data);
+          },
+          remove: {
+            title: 'Confirm',
+            template: 'Are you sure you would like to delete this role?',
+          },
+          menu: true,
+          label: 'Delete',
+          show: (row) => row.state !== 'deleted',
         },
-        remove: {
-          title: 'Confirm',
-          template: 'Are you sure you would like to delete this role?',
-        },
-        menu: true,
-        label: 'Delete',
-        show: (row) => row.state !== 'deleted',
+      ],
+      fetch: (query) => {
+        query.permissions = true;
+        return this.loadAclRoles(query);
       },
-    ],
-    fetch: (query) => {
-      query.permissions = true;
-      return this.loadAclRoles(query);
-    },
-  };
-}
+    };
+  }
 
 }

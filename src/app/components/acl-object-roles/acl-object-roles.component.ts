@@ -16,11 +16,9 @@ export class FsAclObjectRolesComponent {
   @Input() required = false;
   @Input() multiple = false;
   @Input() aclObjectRoles: AclObjectRole[] = [];
-  @Input() label = 'Roles';
+  @Input() rolesLabel = 'Roles';
+  @Input() levelLabel = '';
   @Output() change = new EventEmitter<AclObjectRole[]>();
-
-  public levelAclRoles = { global: [] };
-  public selected = {};
 
   public compareAclRole = (o1: any, o2: any) => {
     return o1 && o2 && o1.id === o2.id;

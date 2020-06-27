@@ -1,19 +1,10 @@
-<!-- <fs-radio-group
-  *ngIf="aclLevelObjectRoles.length > 1"
-  [(ngModel)]="aclLevelObjectRole"
-  fsFormRequired
-  (ngModelChange)="changed.emit(aclLevelObjectRole)"
-  label="Access Level" name="level" orientation="vertical">
-  <mat-radio-button [value]="aclLevelObjectRole" *ngFor="let aclLevelObjectRole of aclLevelObjectRoles">{{aclLevelObjectRole.label}}</mat-radio-button>
-</fs-radio-group> -->
-
 <ng-container *ngIf="!multiple">
   <ng-container *ngFor="let aclObjectRole of aclObjectRoles">
     <fs-checkbox-group
       [(ngModel)]="aclObjectRole.aclRoles"
       (ngModelChange)="change.emit(aclObjectRoles)"
       name="roles"
-      [label]="label"
+      [label]="rolesLabel"
       [fsFormRequired]="required"
       orientation="vertical">
       <mat-checkbox *ngFor="let aclRole of aclRoles" [value]="aclRole">
@@ -27,10 +18,10 @@
   <table>
     <tr>
       <td>
-
+        <small>{{levelLabel}}</small>
       </td>
       <td>
-        <small>Roles</small>
+        <small>{{rolesLabel}}</small>
       </td>
     </tr>
     <tr *ngFor="let aclObjectRole of aclObjectRoles">
@@ -43,7 +34,7 @@
             [compareWith]="compareAclRole"
             (ngModelChange)="change.emit(aclObjectRoles)"
             name="aclRole_{{ aclObjectRole.object.id }}">
-            <mat-option *ngFor="let aclRole of aclObjectRole.aclRoles" [value]="aclRole">
+            <mat-option *ngFor="let aclRole of aclRoles" [value]="aclRole">
               {{ aclRole.name }}
             </mat-option>
           </mat-select>
