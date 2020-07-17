@@ -15,6 +15,7 @@ export class FsAclObjectRolesComponent {
   @Input() aclRoles: AclRole[] = [];
   @Input() required = false;
   @Input() multiple = false;
+  @Input() disabled = false;
   @Input() aclObjectRoles: AclObjectRole[] = [];
   @Input() rolesLabel = 'Roles';
   @Input() levelLabel = '';

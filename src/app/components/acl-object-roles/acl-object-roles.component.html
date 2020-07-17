@@ -4,10 +4,11 @@
       [(ngModel)]="aclObjectRole.aclRoles"
       (ngModelChange)="change.emit(aclObjectRoles)"
       name="roles"
+      [disabled]="disabled"
       [label]="rolesLabel"
       [fsFormRequired]="required"
       orientation="vertical">
-      <mat-checkbox *ngFor="let aclRole of aclRoles" [value]="aclRole">
+      <mat-checkbox [disabled]="disabled" *ngFor="let aclRole of aclRoles" [value]="aclRole">
         {{ aclRole.name }}
       </mat-checkbox>
     </fs-checkbox-group>
@@ -31,6 +32,7 @@
           <mat-select
             [(ngModel)]="aclObjectRole.aclRoles"
             multiple="true"
+            [disabled]="disabled"
             [compareWith]="compareAclRole"
             (ngModelChange)="change.emit(aclObjectRoles)"
             name="aclRole_{{ aclObjectRole.object.id }}">
