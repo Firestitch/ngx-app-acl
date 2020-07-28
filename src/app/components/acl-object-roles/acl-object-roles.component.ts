@@ -24,4 +24,8 @@ export class FsAclObjectRolesComponent {
   public compareAclRole = (o1: any, o2: any) => {
     return o1 && o2 && o1.id === o2.id;
   }
+
+  public changed() {
+    this.change.emit(this.aclObjectRoles);
+  }
 }

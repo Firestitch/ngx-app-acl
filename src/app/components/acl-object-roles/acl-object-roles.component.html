@@ -2,8 +2,9 @@
   <ng-container *ngFor="let aclObjectRole of aclObjectRoles">
     <fs-checkbox-group
       [(ngModel)]="aclObjectRole.aclRoles"
-      (ngModelChange)="change.emit(aclObjectRoles)"
+      (ngModelChange)="changed()"
       name="roles"
+      [compareWith]="compareAclRole"
       [disabled]="disabled"
       [label]="rolesLabel"
       [fsFormRequired]="required"
@@ -34,7 +35,7 @@
             multiple="true"
             [disabled]="disabled"
             [compareWith]="compareAclRole"
-            (ngModelChange)="change.emit(aclObjectRoles)"
+            (ngModelChange)="changed()"
             name="aclRole_{{ aclObjectRole.object.id }}">
             <mat-option *ngFor="let aclRole of aclRoles" [value]="aclRole">
               {{ aclRole.name }}
