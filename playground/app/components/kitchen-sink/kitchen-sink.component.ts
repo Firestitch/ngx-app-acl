@@ -1,4 +1,3 @@
-import { AclObjectEntry } from './../../../../src/app/interfaces/acl-object-entry';
 import { filter, map } from 'rxjs/operators';
 import { AclRole } from '@firestitch/package';
 import { Component, OnInit } from '@angular/core';
@@ -8,7 +7,8 @@ import { FsMessage } from '@firestitch/message';
 import { of } from 'rxjs';
 import { query } from '@angular/animations';
 import { getQueryPredicate } from '@angular/compiler/src/render3/view/util';
-import { AclObjectRole } from 'package/public_api';
+import { AclObjectRole } from './../../../../src/app/interfaces/acl-object-role';
+import { AclObjectEntry } from './../../../../src/app/interfaces/acl-object-entry';
 
 @Component({
   selector: 'kitchen-sink',
