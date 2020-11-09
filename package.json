@@ -1,7 +1,7 @@
 {
   "name": "@firestitch/app-acl",
   "title": "App ACL",
-  "version": "9.0.10",
+  "version": "9.0.12",
   "repository": {
     "type": "git",
     "url": "https://github.com/Firestitch/ngx-app-acl"
@@ -85,7 +85,9 @@
     "rxjs": "^6.5.4",
     "tslint": "^6.1.0",
     "typescript": "^3.7.5",
-    "zone.js": "~0.10.3"
+    "zone.js": "~0.10.3",
+    "camelcase-keys": "^6.2.1",
+    "snakecase-keys": "^3.1.2"
   },
   "engines": {
     "node": ">=6.0.0"

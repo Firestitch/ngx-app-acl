@@ -17,7 +17,7 @@
       </div>
 
       <ng-template #elseObject>
-        Global
+        App
       </ng-template>
     </ng-template>
   </fs-list-column>
@@ -26,11 +26,10 @@
     <ng-template fs-list-header>Roles</ng-template>
     <ng-template fs-list-cell let-row="row">
       <div fxLayout="column" fxLayoutGap="10px">
-
         <div div class="small" *ngFor="let aclEntry of row.aclEntries">
           <ng-container [ngSwitch]="row.level">
             <ng-container *ngSwitchCase="'app'">
-              <fs-acl-role-popover [aclRole]="aclEntry.aclRole" objectName="App">{{aclEntry.aclRole.name}}: App</fs-acl-role-popover>
+              <fs-acl-role-popover [aclRole]="aclEntry.aclRole" objectName="App">{{aclEntry.aclRole.name}}</fs-acl-role-popover>
             </ng-container>
             <ng-container *ngSwitchDefault>
               <ng-container *ngIf="row.object">

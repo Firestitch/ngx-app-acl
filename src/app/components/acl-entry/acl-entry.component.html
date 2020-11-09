@@ -3,7 +3,6 @@
     <div mat-dialog-title>{{ titleEdit? titleEdit : titleAdd }}</div>
     <mat-dialog-content>
       <div *ngIf="aclObjectRole">
-
         <fs-label-field *ngIf="aclObjectEntry.object">
           <fs-label>{{indexedAclRoleLevels[aclObjectEntry.level]}}</fs-label>
           {{aclObjectEntry.object.name}}

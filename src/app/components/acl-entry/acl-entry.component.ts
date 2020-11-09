@@ -1,9 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-import { forkJoin, of } from 'rxjs';
-
 import { FsMessage } from '@firestitch/message';
+
+import { map } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
 
 import { AclRole, AclEntryData, AclObjectRole, AclObjectEntry, AclEntry } from './../../interfaces';
 import { FsAppAclService } from './../../services';
@@ -11,7 +12,7 @@ import { FsAppAclService } from './../../services';
 
 @Component({
   templateUrl: './acl-entry.component.html',
-  styleUrls: ['./acl-entry.component.scss']
+  styleUrls: ['./acl-entry.component.scss'],
 })
 export class FsAclEntryComponent implements OnInit {
 
@@ -42,7 +43,7 @@ export class FsAclEntryComponent implements OnInit {
   }
 
   public save = () => {
-    return this._data.saveAclObjectEntry(this.aclObjectEntry)
+    return this._data.saveAclObjectEntry(this._appAclService.output(this.aclObjectEntry))
     .subscribe((data) => {
       this._message.success('Saved Changes');
       this.close(data);
@@ -50,11 +51,13 @@ export class FsAclEntryComponent implements OnInit {
   }
 
   public ngOnInit() {
-
     forkJoin(
       this._data.loadAclRoles({
         level: this.aclObjectEntry.level
-      }),
+      })
+        .pipe(
+          map((data) => this._appAclService.input(data)),
+        ),
       this._appAclService.getIndexedLevels()
     )
       .subscribe(([

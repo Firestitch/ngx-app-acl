@@ -21,11 +21,11 @@ export class FsAclRolePopoverComponent implements OnInit {
     const aclRolePermissions = this.aclRole.permissions || [];
 
     this._appAclService.getPermissions()
-    .subscribe(response => {
-      this.permissions = response.filter(item => {
-        return aclRolePermissions.some(permission => {
-          return item.value === permission.value;
-        });
+      .subscribe((response) => {
+        this.permissions = response.filter(item => {
+          return aclRolePermissions.some(permission => {
+            return item.value === permission.value;
+          });
       });
     });
   }

@@ -1,5 +1,5 @@
-import { takeUntil, filter } from 'rxjs/operators';
-import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectionStrategy, Input, ChangeDetectorRef, ViewChildren, QueryList } from '@angular/core';
+import { takeUntil, filter, map } from 'rxjs/operators';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, Input, ChangeDetectorRef, ViewChildren, QueryList } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 
@@ -129,7 +129,7 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
       rowActions: [
         {
           click: (data) => {
-            return this.deleteAclRole(data);
+            return this.deleteAclRole(this._appAclService.output(data));
           },
           remove: {
             title: 'Confirm',
@@ -142,7 +142,10 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
       ],
       fetch: (query) => {
         query.permissions = true;
-        return this.loadAclRoles(query);
+        return this.loadAclRoles(query)
+          .pipe(
+            map((data) => this._appAclService.input(data))
+          );
       },
     };
   }

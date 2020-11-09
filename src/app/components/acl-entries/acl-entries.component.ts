@@ -1,4 +1,4 @@
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -10,6 +10,7 @@ import { FsListComponent, FsListConfig } from '@firestitch/list';
 import { FsAppAclService } from '../../services';
 import { AclEntry, AclEntryData, AclRole, AclObjectEntry } from '../../interfaces';
 import { FsAclEntryComponent } from '../acl-entry';
+import { FsPrompt } from '@firestitch/prompt';
 
 
 @Component({
@@ -33,7 +34,8 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly _appAclService: FsAppAclService,
-    private readonly _dialog: MatDialog
+    private readonly _dialog: MatDialog,
+    private _confirm: FsPrompt,
   ) {}
 
   public ngOnInit() {
@@ -58,9 +60,16 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
         {
           label: 'Remove All Roles',
           click: (aclObjectEntry: AclObjectEntry) => {
-            this.saveAclObjectEntry({ ...aclObjectEntry, aclEntries: [] })
-              .subscribe(() => {
-                this.aclEntriesList.reload();
+            this._confirm
+              .confirm({
+                title: 'Remove All Roles',
+                template: 'Are you sure you would like to remove all roles?',
+              }).subscribe(() => {
+                const data = this._appAclService.output({ ...aclObjectEntry, aclEntries: [] });
+                this.saveAclObjectEntry(data)
+                  .subscribe(() => {
+                    this.aclEntriesList.reload();
+                  });
               });
           }
         }
@@ -73,8 +82,10 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
             objects: true,
             aclRoleState: 'active',
           })
+            .pipe(
+              map((response) => this._appAclService.input(response)),
+            )
             .subscribe((aclEntries: AclEntry[]) => {
-
               const objects = {};
               aclEntries.forEach((aclEntry: AclEntry) => {
                 objects[aclEntry.objectId] = aclEntry.object;
@@ -92,14 +103,13 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
 
               const hasApp = aclObjectEntry.some((item) => {
                 return item.aclEntries.some((entry) => {
-                  return entry.aclRole.level === 'app';
+                  return !entry.objectId;
                 });
               });
 
               if (!hasApp) {
                 aclObjectEntry.unshift({ object: null, aclEntries: [], level: 'app' });
               }
-
 
               aclObjectEntry = sortBy(aclObjectEntry, (item: AclObjectEntry) => {
                 return item.object ? item.level : '';
@@ -129,7 +139,7 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this._destroy$)
       )
-      .subscribe(response => {
+      .subscribe(() => {
         this.aclEntriesList.reload();
       });
   }

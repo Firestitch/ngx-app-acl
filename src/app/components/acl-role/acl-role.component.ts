@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { AclRoleAccesses } from './../../consts/acl-role-accesses';
 import { AclRole } from './../../interfaces';
-import { tap, takeUntil } from 'rxjs/operators';
+import { tap, takeUntil, map } from 'rxjs/operators';
 
 import { FsMessage } from '@firestitch/message';
 import { list } from '@firestitch/common';
@@ -156,7 +156,10 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
       query.environmentId = null;
     }
 
-    return this._data.loadAclRole(this._data.aclRole, query);
+    return this._data.loadAclRole(this._data.aclRole, query)
+      .pipe(
+        map((data) => this._appAclService.input(data)),
+      );
   }
 
   public save = (): Observable<any> => {
@@ -177,7 +180,7 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
       }),
     };
 
-    return this._data.saveAclRole(aclRole)
+    return this._data.saveAclRole(this._appAclService.output(aclRole))
       .pipe(
         tap((response) => {
           this._message.success('Saved Changes');

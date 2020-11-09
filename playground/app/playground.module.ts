@@ -57,8 +57,16 @@ const routes: Routes = [
     {
       provide: FS_APP_ACL_CONFIG,
       useValue: {
-        permissions: of([{ "value": "system", "name": "System", "levels": ["app"], "accesses": [15], "description": "Access the \"System\" section:  Includes backend settings, crons, api logs, etc." }, { "value": "admin", "name": "Admin", "levels": ["app"], "accesses": [15], "description": "Access the \"Admin\" section: Includes products, companies, areas, messages, etc. Can perform any internal approval." }, { "value": "item_override", "name": "Item Override", "levels": ["app", "company"], "accesses": [15], "description": "Override the product's pricing in a contract or work order item." }, { "value": "selet_past_pay_periods", "name": "Select Past Pay Periods  ", "levels": ["app", "company"], "accesses": [15], "description": "Allow selection of 10 pay periods previous to the earliest pay period that could otherwise be selected" }, { "value": "vp_approval", "name": "VP Approval", "levels": ["company"], "accesses": [0, 15], "description": "Perform \"Approval\" actions at VP, Director or Ops level." }, { "value": "sage", "name": "Sage", "levels": ["company"], "accesses": [0, 15], "description": "Access to the Sage APIs for external Sage integration." }, { "value": "director_approval", "name": "Director Approval", "levels": ["area"], "accesses": [0, 15], "description": "Perform \"Approval\" actions at Director or Ops level." }, { "value": "ops_approval", "name": "Ops Approval", "levels": ["area"], "accesses": [0, 15], "description": "Perform \"Approval\" actions at Ops level." }, { "value": "include_order_notify", "name": "Include In Work Order Notifications", "accesses": [0, 5], "levels": ["client_account"], "description": "Automatically include as a \"Notification Staff Member\" for new contracts \u0026 work orders." }]),
-        levels: of([{ "value": "app", "name": "App" }, { "value": "company", "name": "Company" }, { "value": "area", "name": "Area" }, { "value": "clientAccount", "name": "Client Account" }, { "value": "contact", "name": "Contact" }])
+        case: 'snake',
+        permissions: of([
+          { "value": "system", "name": "System", "levels": ["app"], "accesses": [15], "description": "Access the \"System\" section:  Includes backend settings, crons, api logs, etc." },
+          { "value": "admin", "name": "Admin", "levels": ["app"], "accesses": [15], "description": "Access the \"Admin\" section: Includes products, companies, areas, messages, etc. Can perform any internal approval." },
+          { "value": "workspaceadmin", "name": "Workspace Admin", "levels": ["workspace"], "accesses": [15], "description": "" },
+        ]),
+          levels: of([
+          { "value": "app", "name": "App" },
+          { "value": "workspace", "name": "Workspace" },
+        ])
       },
       deps: [],
     }
