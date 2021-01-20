@@ -6,8 +6,9 @@ export interface AclEntry {
   aclRoleId?: number;
   aclRole?: AclRole;
   accountId?: number;
-  account?: Account;
+  account?: any;
   objectId?: number;
-  object?: Object;
+  object?: { name: string, id: number };
   environmentId?: number;
+  environment?: { name: string, id: number };
 }

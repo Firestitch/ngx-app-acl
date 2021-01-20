@@ -53,7 +53,8 @@ export class FsAclEntryComponent implements OnInit {
   public ngOnInit() {
     forkJoin(
       this._data.loadAclRoles({
-        level: this.aclObjectEntry.level
+        level: this.aclObjectEntry.level,
+        environmentId: this.aclObjectEntry.environmentId,
       })
         .pipe(
           map((data) => this._appAclService.input(data)),

@@ -1,7 +1,7 @@
 {
   "name": "@firestitch/app-acl",
   "title": "App ACL",
-  "version": "9.0.12",
+  "version": "9.0.15",
   "repository": {
     "type": "git",
     "url": "https://github.com/Firestitch/ngx-app-acl"

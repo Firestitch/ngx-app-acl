@@ -57,7 +57,7 @@ const routes: Routes = [
     {
       provide: FS_APP_ACL_CONFIG,
       useValue: {
-        case: 'snake',
+        case: 'camel',
         permissions: of([
           { "value": "system", "name": "System", "levels": ["app"], "accesses": [15], "description": "Access the \"System\" section:  Includes backend settings, crons, api logs, etc." },
           { "value": "admin", "name": "Admin", "levels": ["app"], "accesses": [15], "description": "Access the \"Admin\" section: Includes products, companies, areas, messages, etc. Can perform any internal approval." },

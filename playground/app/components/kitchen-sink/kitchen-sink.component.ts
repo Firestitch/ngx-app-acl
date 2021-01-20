@@ -45,12 +45,19 @@ export class KitchenSinkComponent implements OnInit {
       {
         id: 1,
         aclRole: this._aclRoles[0],
+        environmentId: null,
       },
       {
         id: 2,
         objectId: 10,
+        environmentId: 33,
         object: {
-          name: 'Workspace'
+          name: 'Workspace',
+          id: 10,
+        },
+        environment: {
+          name: 'Organization A',
+          id: 33,
         },
         aclRole: this._aclRoles[1],
       }
@@ -97,7 +104,8 @@ export class KitchenSinkComponent implements OnInit {
     },
   ];
 
-  public loadAclRoles = () => {
+  public loadAclRoles = (query) => {
+    console.log('loadAclRoles', query);
     return of({ "paging": { "limit": 25, "records": 12, "offset": 0 }, "data": this._aclRoles });
   }
 
@@ -168,7 +176,7 @@ export class KitchenSinkComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadAclRoles()
+    this.loadAclRoles({})
       .subscribe(data => {
         this.aclRoles = data.data;
       });

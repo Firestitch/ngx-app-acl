@@ -1,5 +1,5 @@
 import { takeUntil, map } from 'rxjs/operators';
-import { Component, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, Input, DebugElement } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Subject, Observable } from 'rxjs';
@@ -86,19 +86,34 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
               map((response) => this._appAclService.input(response)),
             )
             .subscribe((aclEntries: AclEntry[]) => {
-              const objects = {};
-              aclEntries.forEach((aclEntry: AclEntry) => {
-                objects[aclEntry.objectId] = aclEntry.object;
-              });
+              const objects = aclEntries.reduce((items, item) => {
+                if (item.object) {
+                  items[item.object.id] = item.object;
+                }
+                return items;
+              }, {});
+
+              const environments = aclEntries.reduce((items, item) => {
+                if (item.environment) {
+                  items[item.environment.id] = item.environment;
+                }
+                return items;
+              }, {});
 
               let aclObjectEntry: AclObjectEntry[] = [];
               const grouped = groupBy(aclEntries, (item) => {
-                return [item.aclRole.level, item.objectId];
+                return [item.aclRole.level, item.environmentId, item.objectId];
               });
 
               forOwn(grouped, (group, key) => {
                 key = key.split(',');
-                aclObjectEntry.push({ object: objects[key[1]], level: key[0], aclEntries: group });
+                aclObjectEntry.push({
+                  object: objects[key[2]],
+                  level: key[0],
+                  environmentId: key[1] ? parseInt(key[1]) : null,
+                  environment: environments[key[1]],
+                  aclEntries: group,
+                });
               });
 
               const hasApp = aclObjectEntry.some((item) => {
@@ -108,7 +123,11 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
               });
 
               if (!hasApp) {
-                aclObjectEntry.unshift({ object: null, aclEntries: [], level: 'app' });
+                aclObjectEntry.unshift({
+                  object: null, aclEntries: [],
+                  level: 'app',
+                  environmentId: null,
+                });
               }
 
               aclObjectEntry = sortBy(aclObjectEntry, (item: AclObjectEntry) => {
