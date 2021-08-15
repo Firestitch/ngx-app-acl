@@ -1,7 +1,7 @@
 
 <fs-list [config]="aclEntriesConfig">
   <fs-list-column>
-    <ng-template fs-list-header>Object</ng-template>
+    <ng-template fs-list-header>Context</ng-template>
     <ng-template fs-list-cell let-row="row">
       <div
         *ngIf="row.object; else elseObject"
@@ -10,19 +10,19 @@
         fxLayoutGap="10px">
           <fs-badge *ngIf="row.object.imageUrl" shape="circle" image="{{ row.object.imageUrl }}"></fs-badge>
           <span>
-            <small>{{ row.object.className }}</small>
-            <div>{{ row.object.name }}</div>
+            <div><small>{{ row.object.className }}</small></div>
+            <a (click)="update(row)">{{ row.object.name }}</a>
           </span>
       </div>
 
       <ng-template #elseObject>
-        App
+        <a (click)="update(row)">App</a>
       </ng-template>
     </ng-template>
   </fs-list-column>
 
-  <fs-list-column>
-    <ng-template fs-list-header>Environment</ng-template>
+  <fs-list-column [show]="environmentShow">
+    <ng-template fs-list-header>{{environmentLabel}}</ng-template>
     <ng-template fs-list-cell let-row="row">
       {{row.environment?.name}}
     </ng-template>

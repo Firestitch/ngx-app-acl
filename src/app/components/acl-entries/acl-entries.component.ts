@@ -1,12 +1,12 @@
 import { takeUntil, map } from 'rxjs/operators';
-import { Component, OnInit, ViewChild, OnDestroy, Input, DebugElement } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Subject, Observable } from 'rxjs';
 
 import { sortBy, groupBy, forOwn } from 'lodash-es';
 
-import { FsListComponent, FsListConfig } from '@firestitch/list';
+import { FsListAction, FsListComponent, FsListConfig } from '@firestitch/list';
 import { FsAppAclService } from '../../services';
 import { AclEntry, AclEntryData, AclRole, AclObjectEntry } from '../../interfaces';
 import { FsAclEntryComponent } from '../acl-entry';
@@ -20,9 +20,12 @@ import { FsPrompt } from '@firestitch/prompt';
 })
 export class FsAclEntriesComponent implements OnInit, OnDestroy {
 
-  @Input() loadAclEntries: (query: any) => Observable<AclEntry[]>;
-  @Input() loadAclRoles: (query: any) => Observable<AclRole[]>;
-  @Input() saveAclObjectEntry: (aclObjectEntry: AclObjectEntry) => Observable<any>;
+  @Input() public loadAclEntries: (query: any) => Observable<AclEntry[]>;
+  @Input() public loadAclRoles: (query: any) => Observable<AclRole[]>;
+  @Input() public saveAclObjectEntry: (aclObjectEntry: AclObjectEntry) => Observable<any>;
+  @Input() public environmentShow = true;
+  @Input() public environmentLabel = 'Environment';
+  @Input() public actions: FsListAction[] = [];
 
   @ViewChild(FsListComponent)
   public aclEntriesList: FsListComponent = null;
@@ -38,25 +41,17 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
     private _confirm: FsPrompt,
   ) {}
 
-  public ngOnInit() {
-
+  public ngOnInit(): void {
     this._appAclService.getPermissions()
       .subscribe(response => {
         this.permissions = response;
       });
 
-
     this.aclEntriesConfig = {
       status: false,
       paging: false,
-      scrollable: false,
+      actions: this.actions,
       rowActions: [
-        {
-          label: 'Edit',
-          click: (aclObjectEntry: AclObjectEntry) => {
-            this.update(aclObjectEntry);
-          }
-        },
         {
           label: 'Remove All Roles',
           click: (aclObjectEntry: AclObjectEntry) => {
@@ -74,7 +69,7 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
           }
         }
       ],
-      fetch: (query) => {
+      fetch: () => {
         return new Observable((observer) => {
           this.loadAclEntries({
             aclRoles: true,
@@ -156,7 +151,7 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
     })
       .afterClosed()
       .pipe(
-        takeUntil(this._destroy$)
+        takeUntil(this._destroy$),
       )
       .subscribe(() => {
         this.aclEntriesList.reload();
@@ -166,6 +161,10 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
   public ngOnDestroy() {
     this._destroy$.next();
     this._destroy$.complete();
+  }
+
+  public reload(): void {
+    this.aclEntriesList.reload();
   }
 
 }
