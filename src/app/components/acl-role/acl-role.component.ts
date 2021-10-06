@@ -98,24 +98,20 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
 
     this.listConfig = {
       status: false,
-      scrollable: false,
+      paging: false,
       noResults: {
         message: '',
       },
       group: {
-        groupBy: (row) => {
-          return row;
+        initialExpand: true,
+        groupBy: (data) => {
+          return data;
         },
-        compareBy: (group) => {
-          return group.category || true;
+        compareBy: (data) => {
+          return data.category || 'General';
         },
-        actions: [
-          {
-            label: 'Group action',
-          },
-        ],
       },
-      fetch: (query) => {
+      fetch: () => {
         return of({
           data: this.levelPermissions.sort((a, b) => {
             a = a.name.toUpperCase();
@@ -142,7 +138,6 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
   }
 
   public getRole(): Observable<any> {
-
     if (!this._data.aclRole.id) {
       return of(this._data.aclRole);
     }

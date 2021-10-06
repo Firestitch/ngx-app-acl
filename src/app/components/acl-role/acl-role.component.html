@@ -79,9 +79,9 @@
                 <ng-template colspan="2" fs-list-group-cell let-row="row" class="permission-group">
                   <small><b>{{row.category || 'General'}}</b></small>
                 </ng-template>
-                <ng-template fs-list-cell let-permission="row">
-                  <div class="permission">{{ permission.name }}</div>
-                  <div class="description small">{{ permission.description }}</div>
+                <ng-template fs-list-cell let-row="row">
+                  <div class="permission">{{ row.name }}</div>
+                  <div class="description small">{{ row.description }}</div>
                 </ng-template>
               </fs-list-column>
               <fs-list-column title="Access" width="1%" class="access">
@@ -89,9 +89,7 @@
                   <span *ngIf="aclRole.allPermissions; else elseAll">
                     {{ indexedAccesses[aclRole.permissions[permission.value]] }}
                   </span>
-
                   <ng-template #elseAll>
-
                     <mat-form-field>
                       <mat-select
                         [(ngModel)]="aclRole.permissions[permission.value]"

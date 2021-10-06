@@ -1,3 +1,4 @@
+
 import { FsListModule } from '@firestitch/list';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -9,7 +10,6 @@ import { FsExampleModule } from '@firestitch/example';
 import { FsMessageModule } from '@firestitch/message';
 import { FsAppAclModule } from '@firestitch/package';
 import { FsLabelModule } from '@firestitch/label';
-import { FsSelectionModule } from '@firestitch/selection';
 import { FsPopoverModule } from '@firestitch/popover';
 import { FsScrollModule } from '@firestitch/scroll';
 import { ToastrModule } from 'ngx-toastr';
@@ -42,7 +42,6 @@ const routes: Routes = [
     FsExampleModule.forRoot(),
     FsListModule.forRoot(),
     FsScrollModule.forRoot(),
-    FsSelectionModule.forRoot(),
     FsMessageModule.forRoot(),
     ToastrModule.forRoot({ preventDuplicates: true }),
     RouterModule.forRoot(routes),
