@@ -1,21 +1,30 @@
-import { Component, Inject, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { AclRoleAccesses } from './../../consts/acl-role-accesses';
 import { AclRole } from './../../interfaces';
-import { tap, takeUntil, map } from 'rxjs/operators';
+import { map, takeUntil, tap } from 'rxjs/operators';
 
 import { FsMessage } from '@firestitch/message';
 import { list } from '@firestitch/common';
-import { FsListConfig, FsListComponent } from '@firestitch/list';
+import { FsListComponent, FsListConfig } from '@firestitch/list';
 
-import { of, Observable, forkJoin, Subject } from 'rxjs';
+import { forkJoin, Observable, of, Subject } from 'rxjs';
 import { FsAppAclService } from './../../services';
 
 
 @Component({
   templateUrl: './acl-role.component.html',
-  styleUrls: ['./acl-role.component.scss']
+  styleUrls: ['./acl-role.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FsAclRoleComponent implements OnInit, OnDestroy {
 
@@ -42,6 +51,7 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
     private readonly _dialogRef: MatDialogRef<FsAclRoleComponent>,
     private readonly _message: FsMessage,
     @Inject(MAT_DIALOG_DATA) private readonly _data: any,
+    private _cdRef: ChangeDetectorRef,
   ) {}
 
   public ngOnInit(): void {
@@ -94,6 +104,8 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
 
         this._updatePermissions();
         this._updateAclRoleConfigs();
+
+        this._cdRef.markForCheck();
       });
 
     this.listConfig = {
