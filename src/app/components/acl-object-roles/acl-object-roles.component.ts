@@ -1,7 +1,8 @@
 import { ControlContainer, NgForm } from '@angular/forms';
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 
-import { AclObjectRole, AclRole } from '../../interfaces';
+import { AclObjectRole } from '../../interfaces/acl-object-role';
+import { AclRole } from '../../interfaces/acl-role';
 
 
 @Component({

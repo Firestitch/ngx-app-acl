@@ -33,7 +33,7 @@ const routes: Routes = [
   bootstrap: [ AppComponent ],
   imports: [
     BrowserModule,
-    FsAppAclModule.forRoot(),
+    FsAppAclModule,
     BrowserAnimationsModule,
     AppMaterialModule,
     FormsModule,
@@ -44,7 +44,7 @@ const routes: Routes = [
     FsScrollModule.forRoot(),
     FsMessageModule.forRoot(),
     ToastrModule.forRoot({ preventDuplicates: true }),
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
   ],
   declarations: [
     AppComponent,

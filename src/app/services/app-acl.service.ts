@@ -9,7 +9,9 @@ import { isArray } from 'lodash-es';
 
 
 import { FS_APP_ACL_CONFIG } from './../injectors/app-acl-config.injector';
-import { AppAclConfig, AclPermission, AclLevel } from './../interfaces';
+import { AppAclConfig } from './../interfaces/app-acl-config';
+import { AclPermission } from './../interfaces/acl-permission';
+import { AclLevel } from './../interfaces/acl-level';
 
 import * as _snakecaseKeys from 'snakecase-keys';
 import * as _camelcaseKeys from 'camelcase-keys';

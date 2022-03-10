@@ -5,9 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
-import { AppAclConfig } from './interfaces/app-acl-config';
-import { FS_APP_ACL_CONFIG } from './injectors/app-acl-config.injector';
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { FsListModule } from '@firestitch/list';
@@ -20,7 +18,7 @@ import { FsBadgeModule } from '@firestitch/badge';
 import { FsCheckboxGroupModule } from '@firestitch/checkboxgroup';
 
 import { FsAclRolesComponent } from './components/acl-roles/acl-roles.component';
-import { FsAclPermissionPopoverComponent } from './components/acl-permission-popover';
+import { FsAclPermissionPopoverComponent } from './components/acl-permission-popover/acl-permission-popover.component';
 import { FsAclRolePopoverComponent } from './components/acl-role-popover/acl-role-popover.component';
 import { FsAclEntriesComponent } from './components/acl-entries/acl-entries.component';
 import { FsAclRoleComponent } from './components/acl-role/acl-role.component';
@@ -71,17 +69,5 @@ import { FormsModule } from '@angular/forms';
     FsAclObjectRolesComponent,
     FsAclEntryComponent,
   ],
-  entryComponents: [
-    FsAclRoleComponent
-  ]
 })
-export class FsAppAclModule {
-  static forRoot(): ModuleWithProviders<FsAppAclModule> {
-    return {
-      ngModule: FsAppAclModule,
-      // providers: [
-      //   { provide: FS_APP_ACL_CONFIG, useValue: config || {} }
-      // ]
-    };
-  }
-}
+export class FsAppAclModule {}

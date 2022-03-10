@@ -7,10 +7,14 @@ import { Subject, Observable } from 'rxjs';
 import { sortBy, groupBy, forOwn } from 'lodash-es';
 
 import { FsListAction, FsListComponent, FsListConfig } from '@firestitch/list';
-import { FsAppAclService } from '../../services';
-import { AclEntry, AclEntryData, AclRole, AclObjectEntry } from '../../interfaces';
-import { FsAclEntryComponent } from '../acl-entry';
 import { FsPrompt } from '@firestitch/prompt';
+
+import { FsAppAclService } from '../../services/app-acl.service';
+import { AclEntryData } from '../../interfaces/acl-entry-data';
+import { AclEntry } from '../../interfaces/acl-entry';
+import { AclRole } from '../../interfaces/acl-role';
+import { AclObjectEntry } from '../../interfaces/acl-object-entry';
+import { FsAclEntryComponent } from '../acl-entry/acl-entry.component';
 
 
 @Component({

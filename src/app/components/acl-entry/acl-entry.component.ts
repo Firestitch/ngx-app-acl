@@ -6,8 +6,12 @@ import { FsMessage } from '@firestitch/message';
 import { map } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
 
-import { AclRole, AclEntryData, AclObjectRole, AclObjectEntry, AclEntry } from './../../interfaces';
-import { FsAppAclService } from './../../services';
+import { AclRole} from './../../interfaces/acl-role';
+import { AclEntryData } from './../../interfaces/acl-entry-data';
+import { AclObjectRole } from './../../interfaces/acl-object-role';
+import { AclObjectEntry } from './../../interfaces/acl-object-entry';
+import { AclEntry } from './../../interfaces/acl-entry';
+import { FsAppAclService } from './../../services/app-acl.service';
 
 
 @Component({

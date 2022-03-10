@@ -10,7 +10,7 @@ import {
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { AclRoleAccesses } from './../../consts/acl-role-accesses';
-import { AclRole } from './../../interfaces';
+import { AclRole } from './../../interfaces/acl-role';
 import { map, takeUntil, tap } from 'rxjs/operators';
 
 import { FsMessage } from '@firestitch/message';
@@ -18,7 +18,7 @@ import { list } from '@firestitch/common';
 import { FsListComponent, FsListConfig } from '@firestitch/list';
 
 import { forkJoin, Observable, of, Subject } from 'rxjs';
-import { FsAppAclService } from './../../services';
+import { FsAppAclService } from './../../services/app-acl.service';
 
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FsAppAclService } from './../../services';
+import { FsAppAclService } from './../../services/app-acl.service';
 
 @Component({
   selector: 'fs-acl-role-popover',

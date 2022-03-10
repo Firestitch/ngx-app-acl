@@ -1,5 +1,5 @@
 
-import { AclRoleAccess } from '../enums';
+import { AclRoleAccess } from '../enums/acl-role-access';
 
 export const AclRoleAccesses = [
   { name: 'None', value: AclRoleAccess.None },

@@ -9,9 +9,10 @@ import { list } from '@firestitch/common';
 
 import { Subject, Observable } from 'rxjs';
 
-import { AclRole, AclLevel } from './../../interfaces';
+import { AclRole } from './../../interfaces/acl-role';
+import { AclLevel } from './../../interfaces/acl-level';
 import { FsAclRoleComponent } from '../acl-role/acl-role.component';
-import { FsAppAclService } from '../../services';
+import { FsAppAclService } from '../../services/app-acl.service';
 
 @Component({
   selector: 'fs-acl-roles',
