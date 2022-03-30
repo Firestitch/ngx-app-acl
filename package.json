@@ -80,7 +80,7 @@
     "date-fns-tz": "^1.0.10",
     "fileapi": "^2.2.0",
     "hammerjs": "^2.0.8",
-    "highlight.js": "^9.18.1",
+    "highlight.js": "^10.4.1",
     "imask": "^6.0.5",
     "lodash-es": "^4.17.15",
     "ng-packagr": "^12.2.7",
