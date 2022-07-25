@@ -29,6 +29,7 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
   @Input() public saveAclObjectEntry: (aclObjectEntry: AclObjectEntry) => Observable<any>;
   @Input() public environmentShow = true;
   @Input() public environmentLabel = 'Environment';
+  @Input() public environmentKey = 'environment';
   @Input() public actions: FsListAction[] = [];
 
   @ViewChild(FsListComponent)
@@ -64,7 +65,7 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
                 title: 'Remove All Roles',
                 template: 'Are you sure you would like to remove all roles?',
               }).subscribe(() => {
-                const data = this._appAclService.output({ ...aclObjectEntry, aclEntries: [] });
+                const data = { ...aclObjectEntry, aclEntries: [] };
                 this.saveAclObjectEntry(data)
                   .subscribe(() => {
                     this.aclEntriesList.reload();
@@ -81,59 +82,66 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
             objects: true,
             aclRoleState: 'active',
           })
-            .pipe(
-              map((response) => this._appAclService.input(response)),
-            )
             .subscribe((aclEntries: AclEntry[]) => {
-              const objects = aclEntries.reduce((items, item) => {
-                if (item.object) {
-                  items[item.object.id] = item.object;
-                }
-                return items;
-              }, {});
+              const objects = aclEntries
+                .filter((aclEntry) => (!!aclEntry.object))
+                .reduce((items, item) => {
+                  return {
+                    ...items,
+                    [item.object.id]: item.object,
+                  };
+                }, {});
 
-              const environments = aclEntries.reduce((items, item) => {
-                if (item.environment) {
-                  items[item.environment.id] = item.environment;
-                }
-                return items;
-              }, {});
+              const environments = aclEntries
+                .filter((aclEntry) => (!!aclEntry[this.environmentKey]))
+                .reduce((items, item) => {
+                  const environment = item[this.environmentKey];
+                  return {
+                    ...items,
+                    [environment.id]: environment,
+                  };
+                }, {});
 
-              let aclObjectEntry: AclObjectEntry[] = [];
-              const grouped = groupBy(aclEntries, (item) => {
-                return [item.aclRole.level, item.environmentId, item.objectId];
+              const groupedAclEntries = groupBy(aclEntries, (item) => {
+                const environmentId = (item[this.environmentKey])?.id;
+                return [item.aclRole.level, environmentId, item.objectId];
               });
 
-              forOwn(grouped, (group, key) => {
-                key = key.split(',');
-                aclObjectEntry.push({
-                  object: objects[key[2]],
-                  level: key[0],
-                  environmentId: key[1] ? parseInt(key[1]) : null,
-                  environment: environments[key[1]],
-                  aclEntries: group,
-                });
-              });
+              let aclObjectEntries: AclObjectEntry[] = Object.keys(groupedAclEntries)
+                .reduce((accum, key: any) => {
+                  const parts = key.split(',');
+                  return [
+                    ...accum,
+                    {
+                      object: objects[parts[2]],
+                      level: parts[0],
+                      [`${this.environmentKey}Id`]: parts[1] ? parseInt(parts[1]) : null,
+                      [this.environmentKey]: environments[parts[1]],
+                      aclEntries: groupedAclEntries[key],
+                    }
+                  ];
+                }, []);
 
-              const hasApp = aclObjectEntry.some((item) => {
+              const hasApp = aclObjectEntries.some((item) => {
                 return item.aclEntries.some((entry) => {
                   return !entry.objectId;
                 });
               });
 
               if (!hasApp) {
-                aclObjectEntry.unshift({
-                  object: null, aclEntries: [],
+                aclObjectEntries.unshift({
+                  object: null, 
+                  aclEntries: [],
                   level: 'app',
                   environmentId: null,
                 });
               }
 
-              aclObjectEntry = sortBy(aclObjectEntry, (item: AclObjectEntry) => {
+              aclObjectEntries = sortBy(aclObjectEntries, (item: AclObjectEntry) => {
                 return item.object ? item.level : '';
               });
 
-              observer.next({ data: aclObjectEntry });
+              observer.next({ data: aclObjectEntries });
               observer.complete();
             });
         });
@@ -142,9 +150,8 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
   }
 
   public update(aclObjectEntry: AclObjectEntry) {
-
     const data: AclEntryData = {
-      aclObjectEntry: aclObjectEntry,
+      aclObjectEntry,
       required: false,
       loadAclRoles: this.loadAclRoles,
       saveAclObjectEntry: this.saveAclObjectEntry

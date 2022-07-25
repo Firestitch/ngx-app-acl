@@ -130,7 +130,7 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
       rowActions: [
         {
           click: (data) => {
-            return this.deleteAclRole(this._appAclService.output(data));
+            return this.deleteAclRole(data);
           },
           remove: {
             title: 'Confirm',
@@ -145,7 +145,7 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
         query.permissions = true;
         return this.loadAclRoles(query)
           .pipe(
-            map((data) => this._appAclService.input(data))
+            map((data) => data)
           );
       },
     };

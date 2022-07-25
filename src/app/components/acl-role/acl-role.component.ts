@@ -163,10 +163,7 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
       query.environmentId = null;
     }
 
-    return this._data.loadAclRole(this._data.aclRole, query)
-      .pipe(
-        map((data) => this._appAclService.input(data)),
-      );
+    return this._data.loadAclRole(this._data.aclRole, query);
   }
 
   public save = (): Observable<any> => {
@@ -187,7 +184,7 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
       }),
     };
 
-    return this._data.saveAclRole(this._appAclService.output(aclRole))
+    return this._data.saveAclRole(aclRole)
       .pipe(
         tap((response) => {
           this._message.success('Saved Changes');

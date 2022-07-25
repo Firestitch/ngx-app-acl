@@ -3,7 +3,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { FsMessage } from '@firestitch/message';
 
-import { map } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
 
 import { AclRole} from './../../interfaces/acl-role';
@@ -23,6 +22,7 @@ export class FsAclEntryComponent implements OnInit {
   public aclRoles: AclRole[] = [];
   public aclObjectEntry: AclObjectEntry;
   public aclObjectRole: AclObjectRole;
+  public aclEntries: AclEntry[] = [];
   public indexedAclRoleLevels = {};
   public titleEdit = 'Edit Roles';
   public titleAdd = 'Assign Roles';
@@ -46,23 +46,9 @@ export class FsAclEntryComponent implements OnInit {
     }
   }
 
-  public save = () => {
-    return this._data.saveAclObjectEntry(this._appAclService.output(this.aclObjectEntry))
-    .subscribe((data) => {
-      this._message.success('Saved Changes');
-      this.close(data);
-    })
-  }
-
   public ngOnInit() {
     forkJoin(
-      this._data.loadAclRoles({
-        level: this.aclObjectEntry.level,
-        environmentId: this.aclObjectEntry.environmentId,
-      })
-        .pipe(
-          map((data) => this._appAclService.input(data)),
-        ),
+      this._data.loadAclRoles(this.aclObjectEntry),
       this._appAclService.getIndexedLevels()
     )
       .subscribe(([
@@ -78,14 +64,13 @@ export class FsAclEntryComponent implements OnInit {
           aclRoles: this.aclObjectEntry.aclEntries
                     .map((aclEntry: AclEntry) => {
                       return aclEntry.aclRole;
-                    })
+                    }),
         };
       });
   }
 
   public aclObjectRoleChange(aclObjectRoles: AclObjectRole[]) {
-
-    this.aclObjectEntry.aclEntries = aclObjectRoles.reduce((aclEntries, aclObjectRole) => {
+    this.aclEntries = aclObjectRoles.reduce((aclEntries, aclObjectRole) => {
       aclObjectRole.aclRoles.forEach(aclRole => {
         aclEntries.push({
           aclRoleId: aclRole.id,
@@ -97,6 +82,19 @@ export class FsAclEntryComponent implements OnInit {
 
       return aclEntries;
     }, []);
+  }
+
+  public save = () => {
+    const aclObjectEntry = {
+      ...this.aclObjectEntry,
+      aclEntries: this.aclEntries,
+    };
+
+    return this._data.saveAclObjectEntry(aclObjectEntry)
+      .subscribe((data) => {
+        this._message.success('Saved Changes');
+        this.close(data);
+      });
   }
 
   public close(data = null) {

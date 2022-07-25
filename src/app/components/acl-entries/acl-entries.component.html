@@ -4,15 +4,15 @@
     <ng-template fs-list-header>Context</ng-template>
     <ng-template fs-list-cell let-row="row">
       <div
-        *ngIf="row.object; else elseObject"
-        fxLayout="row"
-        fxLayoutAlign="start center"
-        fxLayoutGap="10px">
-          <fs-badge *ngIf="row.object.imageUrl" shape="circle" image="{{ row.object.imageUrl }}"></fs-badge>
-          <span>
-            <div><small>{{ row.object.className }}</small></div>
-            <a (click)="update(row)">{{ row.object.name }}</a>
-          </span>
+          *ngIf="row.object; else elseObject"
+          fxLayout="row"
+          fxLayoutAlign="start center"
+          fxLayoutGap="10px">
+        <fs-badge *ngIf="row.object.imageUrl" shape="circle" image="{{ row.object.imageUrl }}"></fs-badge>
+        <span>
+          <div><small>{{ row.object.className }}</small></div>
+          <a (click)="update(row)">{{ row.object.name }}</a>
+        </span>
       </div>
 
       <ng-template #elseObject>

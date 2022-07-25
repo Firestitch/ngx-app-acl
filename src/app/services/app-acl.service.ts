@@ -5,19 +5,11 @@ import { list } from '@firestitch/common';
 import { map } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
 
-import { isArray } from 'lodash-es';
-
 
 import { FS_APP_ACL_CONFIG } from './../injectors/app-acl-config.injector';
 import { AppAclConfig } from './../interfaces/app-acl-config';
 import { AclPermission } from './../interfaces/acl-permission';
 import { AclLevel } from './../interfaces/acl-level';
-
-import * as _snakecaseKeys from 'snakecase-keys';
-import * as _camelcaseKeys from 'camelcase-keys';
-
-const snakecaseKeys = _snakecaseKeys;
-const camelcaseKeys = _camelcaseKeys;
 
 
 @Injectable({
@@ -38,9 +30,6 @@ export class FsAppAclService {
       this._permissions$ = new ReplaySubject();
 
       this._appAclConfig.permissions
-        .pipe(
-          map((data) => this.input(data)),
-        )
         .subscribe((permissions) => {
           this._permissions$.next(permissions);
           this._permissions$.complete();
@@ -56,9 +45,6 @@ export class FsAppAclService {
       this._levels$ = new ReplaySubject();
 
       this._appAclConfig.levels
-        .pipe(
-          map((data) => this.input(data)),
-        )
         .subscribe((levels) => {
           this._levels$.next(levels);
           this._levels$.complete();
@@ -76,25 +62,5 @@ export class FsAppAclService {
           return list(data, 'name', 'value');
         })
       );
-  }
-
-  public input(data) {
-    if (isArray(data)) {
-      return data.map(item => {
-        return this._appAclConfig.case === 'snake' ? camelcaseKeys(item, { deep: true }) : item;
-      });
-    } else {
-      return this._appAclConfig.case === 'snake' ? camelcaseKeys(data, { deep: true }) : data;
-    }
-  }
-
-  public output(data) {
-    if (isArray(data)) {
-      return data.map(item => {
-        return this._appAclConfig.case === 'snake' ? snakecaseKeys(item, { deep: true }) : item;
-      });
-    } else {
-      return this._appAclConfig.case === 'snake' ? snakecaseKeys(data, { deep: true }) : data;
-    }
   }
 }
