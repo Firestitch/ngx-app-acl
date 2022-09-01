@@ -44,9 +44,7 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
   ) { }
 
   public ngOnInit(): void {
-
     new Observable(observer => {
-
       if (this.aclLevels.length) {
           observer.next(this.aclLevels);
           observer.complete();
@@ -67,7 +65,6 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
   }
 
   public openDialog(aclRole: AclRole = { id: null }): void {
-
     const dialogRef = this._dialog.open(FsAclRoleComponent, {
       width: '70%',
       data: {

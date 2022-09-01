@@ -74,6 +74,7 @@ export class KitchenSinkComponent implements OnInit {
       "permissions": [
         { "value": "admin", "name": "Admin", "access": 15 }, { "value": "system", "name": "System", "access": 15 }
       ],
+      "description": "Description of the role",
       "id": 2, "environmentId": null, "name": "Admin Role", "state": "active", "level": "app", "allPermissions": false, "protected": false
     },
     {

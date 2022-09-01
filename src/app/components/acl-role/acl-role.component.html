@@ -6,8 +6,21 @@
         <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="40px" fxLayoutGap.lt-md="0">
           <div fxLayout="column" fxFlex fxFlex.lt-md="0">
             <mat-form-field>
-              <input matInput placeholder="Name" [(ngModel)]="aclRole.name" name="name" fsFormRequired>
+              <input 
+                matInput 
+                placeholder="Name" 
+                [(ngModel)]="aclRole.name" 
+                name="name" 
+                fsFormRequired>
             </mat-form-field>
+
+            <mat-form-field>
+              <input 
+                matInput 
+                placeholder="Description" 
+                [(ngModel)]="aclRole.description"
+                name="description">
+            </mat-form-field>            
 
             <fs-label-field *ngIf="aclRole.id || aclLevels.length === 1; else levels">
               <fs-label>Level</fs-label>

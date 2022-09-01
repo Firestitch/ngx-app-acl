@@ -28,7 +28,8 @@ import { FsAppAclService } from './../../services/app-acl.service';
 })
 export class FsAclRoleComponent implements OnInit, OnDestroy {
 
-  @ViewChild(FsListComponent) public list: FsListComponent;
+  @ViewChild(FsListComponent) 
+  public list: FsListComponent;
 
   public aclRole: AclRole = null;
   public environment;
@@ -47,14 +48,14 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject();
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) private readonly _data: any,
     private readonly _appAclService: FsAppAclService,
     private readonly _dialogRef: MatDialogRef<FsAclRoleComponent>,
     private readonly _message: FsMessage,
-    @Inject(MAT_DIALOG_DATA) private readonly _data: any,
     private _cdRef: ChangeDetectorRef,
   ) {}
 
-  public ngOnInit(): void {
+  public ngOnInit(): void {       
     forkJoin(
       this.getRole(),
       this._appAclService.getPermissions(),

@@ -2,6 +2,7 @@
   <fs-list-column title="Name" name="name" [sortable]="true">
     <ng-template fs-list-cell let-row="row">
       <a (click)="openDialog(row)">{{ row.name }}</a>
+      <div class="small">{{row.description}}</div>
     </ng-template>
   </fs-list-column>
   <fs-list-column name="hierarchy" title="Level" [sortable]="true">
