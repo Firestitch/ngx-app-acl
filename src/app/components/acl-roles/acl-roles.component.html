@@ -1,7 +1,12 @@
 <fs-list [config]="listConfig" *ngIf="listConfig">
   <fs-list-column title="Name" name="name" [sortable]="true">
     <ng-template fs-list-cell let-row="row">
-      <a (click)="openDialog(row)">{{ row.name }}</a>
+      <ng-container *ngIf="row.state !== 'deleted' else deletedRole">
+        <a (click)="openDialog(row)">{{ row.name }}</a>
+      </ng-container>
+      <ng-template #deletedRole>
+        {{ row.name }}
+      </ng-template>
       <div class="small">{{row.description}}</div>
     </ng-template>
   </fs-list-column>
