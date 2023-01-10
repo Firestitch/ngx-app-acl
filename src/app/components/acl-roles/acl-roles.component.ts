@@ -1,5 +1,5 @@
 import { takeUntil, filter, map } from 'rxjs/operators';
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, Input, ChangeDetectorRef, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, Input, ViewChildren, QueryList } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 
@@ -13,6 +13,7 @@ import { AclRole } from './../../interfaces/acl-role';
 import { AclLevel } from './../../interfaces/acl-level';
 import { FsAclRoleComponent } from '../acl-role/acl-role.component';
 import { FsAppAclService } from '../../services/app-acl.service';
+
 
 @Component({
   selector: 'fs-acl-roles',
@@ -40,7 +41,6 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
   constructor(
     private readonly _appAclService: FsAppAclService,
     private readonly _dialog: MatDialog,
-    private readonly _cdRef: ChangeDetectorRef,
   ) { }
 
   public ngOnInit(): void {
