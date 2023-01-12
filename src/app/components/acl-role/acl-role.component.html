@@ -49,38 +49,40 @@
             <fs-label-field *ngIf="levelPermissions.length">
               <fs-label>All Permissions</fs-label>
               <mat-checkbox
-                [(ngModel)]="aclRole.allPermissions"
-                (ngModelChange)="allPermissionsChange($event)"
-                [disabled]="!!aclRole.protected"
-                name="allPermissions">
+                  [(ngModel)]="aclRole.allPermissions"
+                  (ngModelChange)="allPermissionsChange($event)"
+                  [disabled]="!!aclRole.protected"
+                  name="allPermissions">
+                Enable
               </mat-checkbox>
             </fs-label-field>
 
-            <div fxLayout="column" *ngFor="let config of levelAclRoleConfigs">
-              <fs-label-field *ngIf="config.interface === 'checkbox'">
-                <fs-label>{{config.name}}</fs-label>
+            <div fxLayout="column" *ngFor="let roleConfig of roleConfigs">
+              <fs-label-field *ngIf="roleConfig.type === 'checkbox'">
+                <fs-label>{{roleConfig.label}}</fs-label>
                 <mat-checkbox
-                  [(ngModel)]="config.data"
-                  [name]="config.name">
+                    [(ngModel)]="aclRoleConfigValues[roleConfig.name]"
+                    [name]="roleConfig.name">
+                  Enable
                 </mat-checkbox>
                 <fs-label-message>
-                  <mat-hint>{{config.description}}</mat-hint>
+                  <mat-hint>{{roleConfig.description}}</mat-hint>
                 </fs-label-message>
               </fs-label-field>
 
-              <mat-form-field *ngIf="config.interface === 'select'">
+              <mat-form-field *ngIf="roleConfig.type === 'select'">
                 <mat-select
-                  [(ngModel)]="config.data"
-                  [name]="config.value"
-                  [required]="config.required"
-                  [placeholder]="config.name">
+                  [(ngModel)]="aclRoleConfigValues[roleConfig.name]"
+                  [name]="roleConfig.name"
+                  [required]="roleConfig.required"
+                  [placeholder]="roleConfig.label">
                     <mat-option
-                      *ngFor="let item of config.values"
-                      [value]="item.value">
-                        {{ item.name }}
+                        *ngFor="let item of roleConfig.values"
+                        [value]="item.value">
+                      {{ item.name }}
                     </mat-option>
                 </mat-select>
-                <mat-hint>{{config.description}}</mat-hint>
+                <mat-hint>{{roleConfig.description}}</mat-hint>
               </mat-form-field>
             </div>
           </div>

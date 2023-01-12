@@ -1,3 +1,5 @@
+import { AclRoleConfig } from './acl-role-config';
+
 export interface AclRole {
   id?: number;
   name?: string;
@@ -11,5 +13,5 @@ export interface AclRole {
   access?: string;
   protected?: boolean;
   aclPermissions?: any;
-  aclRoleConfigs?: any[];
+  aclRoleConfigs?: AclRoleConfig[];
 }

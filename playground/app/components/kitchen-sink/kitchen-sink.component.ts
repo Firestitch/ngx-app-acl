@@ -10,6 +10,7 @@ import { query } from '@angular/animations';
 import { getQueryPredicate } from '@angular/compiler/src/render3/view/util';
 import { AclObjectRole } from './../../../../src/app/interfaces/acl-object-role';
 import { AclObjectEntry } from './../../../../src/app/interfaces/acl-object-entry';
+import { AclRoleConfig } from 'src/app/interfaces/acl-role-config';
 
 @Component({
   selector: 'kitchen-sink',
@@ -75,7 +76,13 @@ export class KitchenSinkComponent implements OnInit {
         { "value": "admin", "name": "Admin", "access": 15 }, { "value": "system", "name": "System", "access": 15 }
       ],
       "description": "Description of the role",
-      "id": 2, "environmentId": null, "name": "Admin Role", "state": "active", "level": "app", "allPermissions": false, "protected": false
+      "id": 2, "environmentId": null, "name": "Admin Role", "state": "active", "level": "app", "allPermissions": false, "protected": false,
+      aclRoleConfigs: [
+        { 
+          name: 'newMediaNotification',
+          value: true
+        }
+      ] as AclRoleConfig[]
     },
     {
       "aclPermissions": [
@@ -101,7 +108,8 @@ export class KitchenSinkComponent implements OnInit {
       "permissions": [
         { "value": "item_override", "name": "Item Override", "access": 15 },
         { "value": "selet_past_pay_periods", "name": "Select Past Pay Periods  ", "access": 15 }
-      ], "id": 25, "environmentId": null, "name": "Item Override + Select Past Pa", "state": "active", "level": "app", "allPermissions": false, "protected": false
+      ], 
+      "id": 25, "environmentId": null, "name": "Item Override + Select Past Pa", "state": "active", "level": "app", "allPermissions": false, "protected": false
     },
   ];
 
@@ -121,6 +129,7 @@ export class KitchenSinkComponent implements OnInit {
   }
 
   public saveAclRole = (aclRole: AclRole) => {
+    console.log('SaveAclRole', aclRole);
     return of(aclRole);
   }
 
@@ -128,34 +137,19 @@ export class KitchenSinkComponent implements OnInit {
     return of(this.aclEntries);
   }
 
-  public loadAclEntriesRoles = (query: any) => {
+  public loadRoleConfigs = () => {
     return of([
-      {
-        "aclPermissions": [
-          { "id": 138, "aclRoleId": 2, "permission": "admin", "access": 15 },
-          { "id": 139, "aclRoleId": 2, "permission": "item_override", "access": 0 },
-          { "id": 140, "aclRoleId": 2, "permission": "system", "access": 15 }
-        ],
-        "permissions": [
-          { "value": "admin", "name": "Admin", "access": 15 },
-          { "value": "system", "name": "System", "access": 15 }
-        ],
-        "id": 2, "environmentId": null, "name": "Admin Role", "state": "active", "level": "app", "allPermissions": false, "protected": false
-      },
-      {
-        "aclPermissions": [
-          { "id": 141, "aclRoleId": 15, "permission": "system", "access": 15 },
-          { "id": 142, "aclRoleId": 15, "permission": "admin", "access": 15 },
-          { "id": 143, "aclRoleId": 15, "permission": "item_override", "access": 15 }
-        ],
-        "permissions": [
-          { "value": "system", "name": "System", "access": 15 },
-          { "value": "admin", "name": "Admin", "access": 15 },
-          { "value": "item_override", "name": "Item Override", "access": 15 },
-          { "value": "selet_past_pay_periods", "name": "Select Past Pay Periods  ", "access": 15 }
-        ], "id": 15, "environmentId": null, "name": "App Full Access", "state": "active", "level": "app", "allPermissions": true, "protected": false
-      },
-      ])
+      { 
+        type: 'checkbox', 
+        label: 'Enable new media notifications on account creation', 
+        name: 'newMediaNotification',
+        level: 'app',
+      }
+    ]);
+  }
+
+  public loadAclEntriesRoles = (query: any) => {
+    return of(this._aclRoles)
       .pipe(
         map((data: any) => {
           return data.filter(aclRole => {

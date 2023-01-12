@@ -13,6 +13,7 @@ import { AclRole } from './../../interfaces/acl-role';
 import { AclLevel } from './../../interfaces/acl-level';
 import { FsAclRoleComponent } from '../acl-role/acl-role.component';
 import { FsAppAclService } from '../../services/app-acl.service';
+import { RoleConfig } from '../../interfaces';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
   @Input() saveAclRole: (aclRole: AclRole) => Observable<AclRole>;
   @Input() loadAclRoles: (query: any) => Observable<{ data: AclRole[], paging: any }>;
   @Input() loadAclRole: (aclRole: AclRole, query) => Observable<AclRole>;
+  @Input() loadRoleConfigs: (aclRole: AclRole, query) => Observable<RoleConfig[]>;
   @Input() aclLevels: AclLevel[] = [];
 
   @ViewChildren(FsListComponent)
@@ -72,6 +74,7 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
         aclLevels: this.aclLevels,
         loadAclRole: this.loadAclRole,
         saveAclRole: this.saveAclRole,
+        loadRoleConfigs: this.loadRoleConfigs,
       },
     });
 

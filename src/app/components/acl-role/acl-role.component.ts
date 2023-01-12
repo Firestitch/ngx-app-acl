@@ -11,7 +11,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { AclRoleAccesses } from './../../consts/acl-role-accesses';
 import { AclRole } from './../../interfaces/acl-role';
-import { map, takeUntil, tap } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 
 import { FsMessage } from '@firestitch/message';
 import { list } from '@firestitch/common';
@@ -19,6 +19,7 @@ import { FsListComponent, FsListConfig } from '@firestitch/list';
 
 import { forkJoin, Observable, of, Subject } from 'rxjs';
 import { FsAppAclService } from './../../services/app-acl.service';
+import { RoleConfig } from '../../interfaces';
 
 
 @Component({
@@ -42,8 +43,9 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
   public indexedAclLevels = {};
   public onlyFullAccess = false;
   public AclLevels = {};
-  public aclRoleConfigs = [];
-  public levelAclRoleConfigs = [];
+  public roleConfigs: RoleConfig[] = [];
+  public aclRoleConfigValues = {};
+  public loadRoleConfigs: (aclRole: AclRole, query) => Observable<RoleConfig[]>;
 
   private _destroy$ = new Subject();
 
@@ -55,7 +57,7 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
     private _cdRef: ChangeDetectorRef,
   ) {}
 
-  public ngOnInit(): void {       
+  public ngOnInit(): void {      
     forkJoin(
       this.getRole(),
       this._appAclService.getPermissions(),
@@ -83,6 +85,14 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
           ...aclRole,
         };
 
+        this.aclRoleConfigValues = (aclRole.aclRoleConfigs || [])
+          .reduce((accum, aclRoleConfig) => {
+            return {
+              ...accum,
+              [aclRoleConfig.name]: aclRoleConfig.value,
+            }
+          }, {});
+
         if (this.aclRole.id) {
           this.permissions.forEach((permission) => {
             let access = 0;
@@ -104,7 +114,7 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
         }
 
         this._updatePermissions();
-        this._updateAclRoleConfigs();
+        this._updateRoleConfigs();
 
         this._cdRef.markForCheck();
       });
@@ -144,10 +154,8 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
 
   public levelChange(): void {
     this._updatePermissions();
-    this._updateAclRoleConfigs();
-    setTimeout(() => {
-      this.list.reload();
-    });
+    this._updateRoleConfigs();
+    this.list.reload();
   }
 
   public getRole(): Observable<any> {
@@ -168,6 +176,14 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
   }
 
   public save = (): Observable<any> => {
+    const aclRoleConfigs = this.roleConfigs
+      .map((roleConfig) => {
+        return {
+          name: roleConfig.name,
+          value: this.aclRoleConfigValues[roleConfig.name],
+        }
+      });
+
     const aclRole = {
       ...this.aclRole,
       permissions: this.levelPermissions.map((permission) => {
@@ -176,13 +192,7 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
           access: this.aclRole.permissions[permission.value] || 0,
         };
       }),
-      aclRoleConfigs: this.levelAclRoleConfigs.map((item) => {
-        return {
-          id: item.id,
-          value: item.value,
-          data: item.data,
-        };
-      }),
+      aclRoleConfigs,
     };
 
     return this._data.saveAclRole(aclRole)
@@ -218,10 +228,15 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
     });
   }
 
-  private _updateAclRoleConfigs(): void {
-    this.levelAclRoleConfigs = this.aclRoleConfigs.filter((item) => {
-      return this.aclRole.level === item.level;
-    });
+  private _updateRoleConfigs(): void {
+    if(this._data.loadRoleConfigs) {
+      this._data.loadRoleConfigs()
+      .subscribe((roleConfigs: RoleConfig[]) => {
+        this.roleConfigs = roleConfigs
+          .filter((roleConfig) => roleConfig.level === this.aclRole.level);
+        this._cdRef.markForCheck();
+      });
+    }
   }
 
   private _applyMaxPermissionAccess(): void {
