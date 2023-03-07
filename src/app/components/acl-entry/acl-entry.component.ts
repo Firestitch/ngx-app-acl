@@ -11,6 +11,7 @@ import { AclObjectRole } from './../../interfaces/acl-object-role';
 import { AclObjectEntry } from './../../interfaces/acl-object-entry';
 import { AclEntry } from './../../interfaces/acl-entry';
 import { FsAppAclService } from './../../services/app-acl.service';
+import { tap } from 'rxjs/operators';
 
 
 @Component({
@@ -48,7 +49,10 @@ export class FsAclEntryComponent implements OnInit {
 
   public ngOnInit() {
     forkJoin(
-      this._data.loadAclRoles(this.aclObjectEntry),
+      this._data.loadAclRoles({
+        level: this.aclObjectEntry.level,
+        environmentId: this.aclObjectEntry.environmentId || null,
+      }),
       this._appAclService.getIndexedLevels()
     )
       .subscribe(([
@@ -91,10 +95,12 @@ export class FsAclEntryComponent implements OnInit {
     };
 
     return this._data.saveAclObjectEntry(aclObjectEntry)
-      .subscribe((data) => {
-        this._message.success('Saved Changes');
-        this.close(data);
-      });
+      .pipe(
+        tap((data) => {
+          this._message.success('Saved Changes');
+          this.close(data);
+        })
+      );
   }
 
   public close(data = null) {

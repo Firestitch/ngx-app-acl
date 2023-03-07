@@ -1,21 +1,21 @@
 import { AclEntry } from './../../../../src/app/interfaces/acl-entry';
-import { filter, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { AclRole } from '@firestitch/package';
 import { Component, OnInit } from '@angular/core';
 import { KitchenSinkConfigureComponent } from '../kitchen-sink-configure';
 import { FsExampleComponent } from '@firestitch/example';
 import { FsMessage } from '@firestitch/message';
-import { of } from 'rxjs';
-import { query } from '@angular/animations';
-import { getQueryPredicate } from '@angular/compiler/src/render3/view/util';
+import { Observable, of } from 'rxjs';
 import { AclObjectRole } from './../../../../src/app/interfaces/acl-object-role';
 import { AclObjectEntry } from './../../../../src/app/interfaces/acl-object-entry';
 import { AclRoleConfig } from 'src/app/interfaces/acl-role-config';
+import { RoleConfig } from 'package/app/interfaces';
+
 
 @Component({
   selector: 'kitchen-sink',
-  templateUrl: 'kitchen-sink.component.html',
-  styleUrls: ['kitchen-sink.component.scss']
+  templateUrl: './kitchen-sink.component.html',
+  styleUrls: ['./kitchen-sink.component.scss']
 })
 export class KitchenSinkComponent implements OnInit {
 
@@ -137,7 +137,7 @@ export class KitchenSinkComponent implements OnInit {
     return of(this.aclEntries);
   }
 
-  public loadRoleConfigs = () => {
+  public loadRoleConfigs = (): Observable<RoleConfig[]> => {
     return of([
       { 
         type: 'checkbox', 

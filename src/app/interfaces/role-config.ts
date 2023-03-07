@@ -5,4 +5,5 @@ export interface RoleConfig {
   values?: { name: string; value: string}[];
   required?: boolean;
   level?: string;
+  label?: string;
 }

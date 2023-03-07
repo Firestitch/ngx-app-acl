@@ -9,7 +9,7 @@
       [label]="rolesLabel"
       [fsFormRequired]="required"
       orientation="vertical">
-      <mat-checkbox [disabled]="disabled" *ngFor="let aclRole of aclRoles" [value]="aclRole">
+      <mat-checkbox [disabled]="disabled" *ngFor="let aclRole of aclRoles" [value]="$any(aclRole)">
         {{ aclRole.name }}
       </mat-checkbox>
     </fs-checkbox-group>
