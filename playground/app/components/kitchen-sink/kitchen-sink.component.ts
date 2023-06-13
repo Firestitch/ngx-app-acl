@@ -89,7 +89,7 @@ export class KitchenSinkComponent implements OnInit {
         { "value": "item_override", "name": "Item Override", "access": 15 },
         { "value": "selet_past_pay_periods", "name": "Select Past Pay Periods  ", "access": 15 }
       ],
-      "id": 15, "environmentId": null, "name": "App Full Access", "state": "active", "level": "app", "allPermissions": true, "protected": false
+      "id": 15, "environmentId": null, "name": "App Full Access", "state": "deleted", "level": "app", "allPermissions": true, "protected": false
     },
     {
       "aclPermissions": [
@@ -114,6 +114,10 @@ export class KitchenSinkComponent implements OnInit {
     return of(this._aclRoles.find((item) => {
       return item.id === aclRole.id;
     }));
+  }
+
+  public restoreAclRole = (aclRole: AclRole) => {
+    return of(aclRole);
   }
 
   public deleteAclRole = (aclRole: AclRole) => {

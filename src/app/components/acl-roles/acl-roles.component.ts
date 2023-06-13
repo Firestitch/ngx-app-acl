@@ -1,4 +1,4 @@
-import { takeUntil, filter, map } from 'rxjs/operators';
+import { takeUntil, filter, map, tap } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, Input, ChangeDetectorRef, ViewChildren, QueryList } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -23,6 +23,7 @@ import { FsAppAclService } from '../../services/app-acl.service';
 export class FsAclRolesComponent implements OnInit, OnDestroy {
 
   @Input() deleteAclRole: (aclRole: AclRole) => Observable<AclRole>;
+  @Input() restoreAclRole: (aclRole: AclRole) => Observable<AclRole>;
   @Input() saveAclRole: (aclRole: AclRole) => Observable<AclRole>;
   @Input() loadAclRoles: (query: any) => Observable<{ data: AclRole[], paging: any }>;
   @Input() loadAclRole: (aclRole: AclRole, query) => Observable<AclRole>;
@@ -136,6 +137,22 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
           menu: true,
           label: 'Delete',
           show: (row) => row.state !== 'deleted',
+        },
+        {
+          click: (data) => {
+            return this.restoreAclRole(data)
+              .pipe(
+                tap(() => {
+                  this.list.forEach((l: FsListComponent) => {
+                    l.reload();
+                  });
+                }),
+                takeUntil(this._destroy$),
+              )
+              .subscribe();
+          },
+          label: 'Restore',
+          show: (row) => row.state === 'deleted',
         },
       ],
       fetch: (query) => {
