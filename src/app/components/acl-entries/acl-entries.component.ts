@@ -63,7 +63,10 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
             this._confirm
               .confirm({
                 title: 'Remove All Roles',
-                template: 'Are you sure you would like to remove all roles?',
+                commitLabel: 'Save',
+                template: `Please note that removing roles may prevent users from being able to successfully login.<br>
+                  These changes are effective immediately.<br>
+                  Are you sure you would like to continue?`,
               }).subscribe(() => {
                 const data = { ...aclObjectEntry, aclEntries: [] };
                 this.saveAclObjectEntry(data)

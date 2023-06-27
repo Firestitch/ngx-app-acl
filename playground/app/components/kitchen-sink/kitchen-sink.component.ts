@@ -9,7 +9,7 @@ import { Observable, of } from 'rxjs';
 import { AclObjectRole } from './../../../../src/app/interfaces/acl-object-role';
 import { AclObjectEntry } from './../../../../src/app/interfaces/acl-object-entry';
 import { AclRoleConfig } from 'src/app/interfaces/acl-role-config';
-import { RoleConfig } from 'package/app/interfaces';
+import { RoleConfig } from 'src/app/interfaces';
 
 
 @Component({
