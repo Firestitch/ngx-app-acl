@@ -88,34 +88,50 @@
           </div>
 
           <div fxLayout="column" fxFlex="65" fxFlex.lt-md="0" *ngIf="aclRole.level" [hidden]="!levelPermissions.length" class="permissions">
-
             <fs-list [config]="listConfig">
               <fs-list-column title="Permissions">
-                <ng-template colspan="2" fs-list-group-cell let-row="row" class="permission-group">
+                <ng-template fs-list-group-cell let-row="row" class="permission-group">
                   <small><b>{{row.category || 'General'}}</b></small>
-                </ng-template>
+                </ng-template>  
                 <ng-template fs-list-cell let-row="row">
                   <div class="permission">{{ row.name }}</div>
                   <div class="description small">{{ row.description }}</div>
                 </ng-template>
               </fs-list-column>
-              <fs-list-column title="Access" width="1%" class="access">
+              <fs-list-column title="Access" width="1%" class="access">              
+                <ng-template fs-list-group-cell let-row="row" let-group="group" let-groupChildren="groupChildren" class="permission-group">
+                  <ng-container *ngIf="!aclRole.allPermissions">
+                    <mat-form-field>
+                      <mat-select
+                          [ngModel]="group.bulk"
+                          (selectionChange)="bulkChange($event, groupChildren, group)"
+                          [name]="'bulk-' + row.category">
+                        <ng-container *ngFor="let access of AclRoleAccesses">
+                          <mat-option
+                              [value]="access.value">
+                            {{ access.name }}
+                          </mat-option>
+                        </ng-container>
+                      </mat-select>
+                    </mat-form-field>
+                  </ng-container>
+                </ng-template>
                 <ng-template fs-list-cell let-row="permission" let-permission="row">
                   <span *ngIf="aclRole.allPermissions; else elseAll">
-                    {{ indexedAccesses[aclRole.permissions[permission.value]] }}
+                    {{ indexedAccesses[aclRolePermissions[permission.value]] }}
                   </span>
                   <ng-template #elseAll>
                     <mat-form-field>
                       <mat-select
-                        [(ngModel)]="aclRole.permissions[permission.value]"
-                        [disabled]="!!aclRole.protected"
-                        fsFormRequired
-                        name="access-{{ permission.value }}">
+                          [(ngModel)]="aclRolePermissions[permission.value]"
+                          [disabled]="!!aclRole.protected"
+                          required
+                          name="access-{{ permission.value }}">
                         <ng-container *ngFor="let access of AclRoleAccesses">
                           <mat-option
-                            *ngIf="access.value === 0 || permission.accesses.indexOf(access.value) !== -1"
-                            [value]="access.value">
-                              {{ access.name }}
+                              *ngIf="access.value === 0 || permission.accesses.indexOf(access.value) !== -1"
+                              [value]="access.value">
+                            {{ access.name }}
                           </mat-option>
                         </ng-container>
                       </mat-select>

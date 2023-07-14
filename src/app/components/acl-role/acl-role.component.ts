@@ -20,6 +20,7 @@ import { FsListComponent, FsListConfig } from '@firestitch/list';
 import { forkJoin, Observable, of, Subject } from 'rxjs';
 import { FsAppAclService } from './../../services/app-acl.service';
 import { RoleConfig } from '../../interfaces';
+import { MatSelectChange } from '@angular/material/select';
 
 
 @Component({
@@ -45,6 +46,7 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
   public AclLevels = {};
   public roleConfigs: RoleConfig[] = [];
   public aclRoleConfigValues = {};
+  public aclRolePermissions = {};
   public loadRoleConfigs: (aclRole: AclRole, query) => Observable<RoleConfig[]>;
 
   private _destroy$ = new Subject();
@@ -105,7 +107,7 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
               access = aclPermission.access;
             }
 
-            this.aclRole.permissions[permission.value] = access;
+            this.aclRolePermissions[permission.value] = access;
           });
         }
 
@@ -152,6 +154,20 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
     };
   }
 
+  public bulkChange(event: MatSelectChange, groupChildren, group): void {    
+    groupChildren
+    .forEach((permission) => {
+      const access = permission.accesses
+        .find((access) => event.value === access);
+
+      if(access || !event.value) {
+        this.aclRolePermissions[permission.value] = event.value;
+      }      
+    });
+
+    event.source.writeValue(null);
+  }
+
   public levelChange(): void {
     this._updatePermissions();
     this._updateRoleConfigs();
@@ -189,7 +205,7 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
       permissions: this.levelPermissions.map((permission) => {
         return {
           value: permission.value,
-          access: this.aclRole.permissions[permission.value] || 0,
+          access: this.aclRolePermissions[permission.value] || 0,
         };
       }),
       aclRoleConfigs,
@@ -241,7 +257,7 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
 
   private _applyMaxPermissionAccess(): void {
     this.permissions.forEach((permission) => {
-      this.aclRole.permissions[permission.value] = Math.max(...permission.accesses);
+      this.aclRolePermissions[permission.value] = Math.max(...permission.accesses);
     });
   }
 
