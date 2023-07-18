@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { Subject, Observable } from 'rxjs';
 
-import { sortBy, groupBy, forOwn } from 'lodash-es';
+import { sortBy, groupBy } from 'lodash-es';
 
 import { FsListAction, FsListComponent, FsListConfig } from '@firestitch/list';
 import { FsPrompt } from '@firestitch/prompt';
@@ -44,7 +44,7 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
     private readonly _appAclService: FsAppAclService,
     private readonly _dialog: MatDialog,
     private _confirm: FsPrompt,
-  ) {}
+  ) { }
 
   public ngOnInit(): void {
     this._appAclService.getPermissions()
@@ -133,7 +133,7 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
 
               if (!hasApp) {
                 aclObjectEntries.unshift({
-                  object: null, 
+                  object: null,
                   aclEntries: [],
                   level: 'app',
                   environmentId: null,

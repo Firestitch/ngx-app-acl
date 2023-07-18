@@ -38,7 +38,6 @@ const routes: Routes = [
     AppMaterialModule,
     FormsModule,
     FsLabelModule,
-    FsPopoverModule.forRoot(),
     FsExampleModule.forRoot(),
     FsListModule.forRoot(),
     FsScrollModule.forRoot(),

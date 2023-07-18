@@ -68,7 +68,7 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
   }
 
   public openDialog(aclRole: AclRole = { id: null }): void {
-    const dialogRef = this._dialog.open(FsAclRoleComponent, {
+    this._dialog.open(FsAclRoleComponent, {
       width: '70%',
       data: {
         aclRole,
@@ -77,9 +77,8 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
         saveAclRole: this.saveAclRole,
         loadRoleConfigs: this.loadRoleConfigs,
       },
-    });
-
-    dialogRef.afterClosed()
+    })
+      .afterClosed()
       .pipe(
         takeUntil(this._destroy$),
         filter((response) => !!response),
@@ -139,7 +138,7 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
           },
           menu: true,
           label: 'Delete',
-          show: (row) => row.state !== 'deleted',
+          show: (row) => !!this.deleteAclRole && row.state !== 'deleted',
         },
         {
           click: (data) => {
@@ -155,7 +154,7 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
               .subscribe();
           },
           label: 'Restore',
-          show: (row) => row.state === 'deleted',
+          show: (row) => !!this.restoreAclRole && row.state === 'deleted',
         },
       ],
       fetch: (query) => {
