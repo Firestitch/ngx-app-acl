@@ -1,6 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
+
 import { AclRoleAccess } from '../enums/acl-role-access';
-import { AclPermission } from '@firestitch/package';
+import { AclPermission } from '../interfaces/acl-permission';
 
 
 @Pipe({

@@ -21,7 +21,6 @@ import { forkJoin, Observable, of, Subject } from 'rxjs';
 import { FsAppAclService } from './../../services/app-acl.service';
 import { RoleConfig } from '../../interfaces';
 import { MatSelectChange } from '@angular/material/select';
-import { AclRoleAccess } from '../../enums/acl-role-access';
 
 
 @Component({
