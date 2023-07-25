@@ -21,6 +21,7 @@ import { forkJoin, Observable, of, Subject } from 'rxjs';
 import { FsAppAclService } from './../../services/app-acl.service';
 import { RoleConfig } from '../../interfaces';
 import { MatSelectChange } from '@angular/material/select';
+import { AclRoleAccess } from '../../enums/acl-role-access';
 
 
 @Component({
@@ -30,7 +31,7 @@ import { MatSelectChange } from '@angular/material/select';
 })
 export class FsAclRoleComponent implements OnInit, OnDestroy {
 
-  @ViewChild(FsListComponent) 
+  @ViewChild(FsListComponent)
   public list: FsListComponent;
 
   public aclRole: AclRole = null;
@@ -59,7 +60,7 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
     private _cdRef: ChangeDetectorRef,
   ) {}
 
-  public ngOnInit(): void {      
+  public ngOnInit(): void {
     forkJoin(
       this.getRole(),
       this._appAclService.getPermissions(),
@@ -154,7 +155,7 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
     };
   }
 
-  public bulkChange(event: MatSelectChange, groupChildren, group): void {    
+  public bulkChange(event: MatSelectChange, groupChildren, group): void {
     groupChildren
     .forEach((permission) => {
       const access = permission.accesses
@@ -162,7 +163,7 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
 
       if(access || !event.value) {
         this.aclRolePermissions[permission.value] = event.value;
-      }      
+      }
     });
 
     event.source.writeValue(null);

@@ -26,6 +26,7 @@ import { FsAclObjectRolesComponent } from './components/acl-object-roles/acl-obj
 import { FsAclEntryComponent } from './components/acl-entry/acl-entry.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
+import { BulkOptionsFilterPipe } from './pipes/bulk-options-filter.pipe';
 
 
 @NgModule({
@@ -59,6 +60,7 @@ import { FormsModule } from '@angular/forms';
     FsAclRolePopoverComponent,
     FsAclObjectRolesComponent,
     FsAclEntryComponent,
+    BulkOptionsFilterPipe,
   ],
   exports: [
     FsAclRolesComponent,

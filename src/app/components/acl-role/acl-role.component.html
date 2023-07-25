@@ -6,21 +6,21 @@
         <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="40px" fxLayoutGap.lt-md="0">
           <div fxLayout="column" fxFlex fxFlex.lt-md="0">
             <mat-form-field>
-              <input 
-                matInput 
-                placeholder="Name" 
-                [(ngModel)]="aclRole.name" 
-                name="name" 
+              <input
+                matInput
+                placeholder="Name"
+                [(ngModel)]="aclRole.name"
+                name="name"
                 fsFormRequired>
             </mat-form-field>
 
             <mat-form-field>
-              <input 
-                matInput 
-                placeholder="Description" 
+              <input
+                matInput
+                placeholder="Description"
                 [(ngModel)]="aclRole.description"
                 name="description">
-            </mat-form-field>            
+            </mat-form-field>
 
             <fs-label-field *ngIf="aclRole.id || aclLevels.length === 1; else levels">
               <fs-label>Level</fs-label>
@@ -92,13 +92,13 @@
               <fs-list-column title="Permissions">
                 <ng-template fs-list-group-cell let-row="row" class="permission-group">
                   <small><b>{{row.category || 'General'}}</b></small>
-                </ng-template>  
+                </ng-template>
                 <ng-template fs-list-cell let-row="row">
                   <div class="permission">{{ row.name }}</div>
                   <div class="description small">{{ row.description }}</div>
                 </ng-template>
               </fs-list-column>
-              <fs-list-column title="Access" width="1%" class="access">              
+              <fs-list-column title="Access" width="1%" class="access">
                 <ng-template fs-list-group-cell let-row="row" let-group="group" let-groupChildren="groupChildren" class="permission-group">
                   <ng-container *ngIf="!aclRole.allPermissions">
                     <mat-form-field>
@@ -106,7 +106,7 @@
                           [ngModel]="group.bulk"
                           (selectionChange)="bulkChange($event, groupChildren, group)"
                           [name]="'bulk-' + row.category">
-                        <ng-container *ngFor="let access of AclRoleAccesses">
+                        <ng-container *ngFor="let access of AclRoleAccesses | builkOptionsFilter: groupChildren">
                           <mat-option
                               [value]="access.value">
                             {{ access.name }}
