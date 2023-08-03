@@ -16,6 +16,7 @@ import { FsLabelModule } from '@firestitch/label';
 import { FsRadioGroupModule } from '@firestitch/radiogroup';
 import { FsBadgeModule } from '@firestitch/badge';
 import { FsCheckboxGroupModule } from '@firestitch/checkboxgroup';
+import { FsMenuModule } from '@firestitch/menu';
 
 import { FsAclRolesComponent } from './components/acl-roles/acl-roles.component';
 import { FsAclPermissionPopoverComponent } from './components/acl-permission-popover/acl-permission-popover.component';
@@ -51,6 +52,7 @@ import { BulkOptionsFilterPipe } from './pipes/bulk-options-filter.pipe';
     FsRadioGroupModule,
     FsBadgeModule,
     FsCheckboxGroupModule,
+    FsMenuModule,
   ],
   declarations: [
     FsAclRolesComponent,

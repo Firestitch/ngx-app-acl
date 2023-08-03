@@ -99,21 +99,22 @@
                 </ng-template>
               </fs-list-column>
               <fs-list-column title="Access" width="1%" class="access">
-                <ng-template fs-list-group-cell let-row="row" let-group="group" let-groupChildren="groupChildren" class="permission-group">
+                <ng-template fs-list-group-cell
+                             let-row="row"
+                             let-group="group"
+                             let-groupChildren="groupChildren"
+                             class="permission-group"
+                             align="right">
                   <ng-container *ngIf="!aclRole.allPermissions">
-                    <mat-form-field>
-                      <mat-select
-                          [ngModel]="group.bulk"
-                          (selectionChange)="bulkChange($event, groupChildren, group)"
-                          [name]="'bulk-' + row.category">
-                        <ng-container *ngFor="let access of AclRoleAccesses | builkOptionsFilter: groupChildren">
-                          <mat-option
-                              [value]="access.value">
-                            {{ access.name }}
-                          </mat-option>
-                        </ng-container>
-                      </mat-select>
-                    </mat-form-field>
+                    <fs-menu>
+                      <ng-container *ngFor="let access of AclRoleAccesses | builkOptionsFilter: groupChildren">
+                        <ng-template
+                          fs-menu-item
+                          (click)="bulkChange(access.value, groupChildren, group)">
+                          {{ access.name }}
+                        </ng-template>
+                      </ng-container>
+                    </fs-menu>
                   </ng-container>
                 </ng-template>
                 <ng-template fs-list-cell let-row="permission" let-permission="row">

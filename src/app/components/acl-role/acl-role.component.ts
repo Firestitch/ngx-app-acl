@@ -154,18 +154,16 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
     };
   }
 
-  public bulkChange(event: MatSelectChange, groupChildren, group): void {
+  public bulkChange(value: number, groupChildren, group): void {
     groupChildren
-    .forEach((permission) => {
-      const access = permission.accesses
-        .find((access) => event.value === access);
+      .forEach((permission) => {
+        const access = permission.accesses
+          .find((access) => value === access);
 
-      if(access || !event.value) {
-        this.aclRolePermissions[permission.value] = event.value;
-      }
-    });
-
-    event.source.writeValue(null);
+        if(access || !value) {
+          this.aclRolePermissions[permission.value] = value;
+        }
+      });
   }
 
   public levelChange(): void {
