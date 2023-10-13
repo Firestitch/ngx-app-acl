@@ -72,15 +72,15 @@
 
               <mat-form-field *ngIf="roleConfig.type === 'select'">
                 <mat-select
-                  [(ngModel)]="aclRoleConfigValues[roleConfig.name]"
-                  [name]="roleConfig.name"
-                  [required]="roleConfig.required"
-                  [placeholder]="roleConfig.label">
-                    <mat-option
-                        *ngFor="let item of roleConfig.values"
-                        [value]="item.value">
-                      {{ item.name }}
-                    </mat-option>
+                    [(ngModel)]="aclRoleConfigValues[roleConfig.name]"
+                    [name]="roleConfig.name"
+                    [required]="roleConfig.required"
+                    [placeholder]="roleConfig.label">
+                  <mat-option
+                      *ngFor="let item of roleConfig.values"
+                      [value]="item.value">
+                    {{ item.name }}
+                  </mat-option>
                 </mat-select>
                 <mat-hint>{{roleConfig.description}}</mat-hint>
               </mat-form-field>
@@ -99,12 +99,13 @@
                 </ng-template>
               </fs-list-column>
               <fs-list-column title="Access" width="1%" class="access">
-                <ng-template fs-list-group-cell
-                             let-row="row"
-                             let-group="group"
-                             let-groupChildren="groupChildren"
-                             class="permission-group"
-                             align="right">
+                <ng-template 
+                    fs-list-group-cell
+                    let-row="row"
+                    let-group="group"
+                    let-groupChildren="groupChildren"
+                    class="permission-group"
+                    align="right">
                   <ng-container *ngIf="!aclRole.allPermissions">
                     <fs-menu>
                       <ng-container *ngFor="let access of AclRoleAccesses | builkOptionsFilter: groupChildren">

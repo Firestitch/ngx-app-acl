@@ -20,7 +20,7 @@ import { FsListComponent, FsListConfig } from '@firestitch/list';
 import { forkJoin, Observable, of, Subject } from 'rxjs';
 import { FsAppAclService } from './../../services/app-acl.service';
 import { RoleConfig } from '../../interfaces';
-import { MatSelectChange } from '@angular/material/select';
+import { AclRoleAccess } from '../../enums/acl-role-access';
 
 
 @Component({
@@ -226,6 +226,8 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
     this._updatePermissions();
     if (all) {
       this._applyMaxPermissionAccess();
+    } else {
+      this._applyNonePermissionAccess();
     }
   }
 
@@ -235,7 +237,8 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
   }
 
   private _updatePermissions(): void {
-    this.levelPermissions = this.permissions.filter((permission) => {
+    this.levelPermissions = this.permissions
+    .filter((permission) => {
       return permission.levels.some((item) => {
         return item === this.aclRole.level;
       });
@@ -256,6 +259,12 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
   private _applyMaxPermissionAccess(): void {
     this.permissions.forEach((permission) => {
       this.aclRolePermissions[permission.value] = Math.max(...permission.accesses);
+    });
+  }
+
+  private _applyNonePermissionAccess(): void {
+    this.permissions.forEach((permission) => {
+      this.aclRolePermissions[permission.value] = AclRoleAccess.None;
     });
   }
 

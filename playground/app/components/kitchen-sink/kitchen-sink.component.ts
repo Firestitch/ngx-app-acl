@@ -32,8 +32,6 @@ export class KitchenSinkComponent implements OnInit {
     private exampleComponent: FsExampleComponent,
     private message: FsMessage,
   ) {
-    exampleComponent.setConfigureComponent(KitchenSinkConfigureComponent, { config: this.config });
-
     this.aclObjectRole = {
       object: null,
       aclRoles: [
