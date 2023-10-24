@@ -31,6 +31,8 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
   @Input() loadAclRole: (aclRole: AclRole, query) => Observable<AclRole>;
   @Input() loadRoleConfigs: (aclRole: AclRole, query) => Observable<RoleConfig[]>;
   @Input() aclLevels: AclLevel[] = [];
+  @Input()
+  public hideDeleteAclRole: (data: any) => boolean;
 
   @ViewChildren(FsListComponent)
   public list = new QueryList<FsListComponent>();
@@ -138,7 +140,15 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
           },
           menu: true,
           label: 'Delete',
-          show: (row) => !!this.deleteAclRole && row.state !== 'deleted',
+          show: (row) => {
+            const hideDelete = !!this.hideDeleteAclRole
+              ? this.hideDeleteAclRole(row)
+              : false;
+
+            return !!this.deleteAclRole
+              && row.state !== 'deleted'
+              && !hideDelete;
+          },
         },
         {
           click: (data) => {
