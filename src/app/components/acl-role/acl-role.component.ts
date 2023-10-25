@@ -48,6 +48,7 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
   public aclRoleConfigValues = {};
   public aclRolePermissions = {};
   public loadRoleConfigs: (aclRole: AclRole, query) => Observable<RoleConfig[]>;
+  public disabled: boolean;
 
   private _destroy$ = new Subject();
 
@@ -57,7 +58,7 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
     private readonly _dialogRef: MatDialogRef<FsAclRoleComponent>,
     private readonly _message: FsMessage,
     private _cdRef: ChangeDetectorRef,
-  ) {}
+  ) { }
 
   public ngOnInit(): void {
     forkJoin(
@@ -72,6 +73,7 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
 
         this.permissions = aclPermissions;
         this.aclLevels = this._data.aclLevels;
+        this.disabled = this._data.disabled;
 
         this.indexedAclLevels = list(this.aclLevels, 'name', 'value');
         this.indexedAccesses = list(AclRoleAccesses, 'name', 'value');

@@ -1,7 +1,11 @@
 <form fsForm [submit]="save">
   <fs-dialog>
     <ng-container *ngIf="aclRole">
-      <div mat-dialog-title>{{ aclRole.id ? 'Edit' : 'Create' }} Role</div>
+      <div mat-dialog-title>
+        <ng-container *ngIf="!disabled">{{ aclRole.id ? 'Edit' : 'Create' }}</ng-container>
+        <ng-container *ngIf="disabled">View</ng-container>
+        Role
+      </div>
       <mat-dialog-content>
         <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="40px" fxLayoutGap.lt-md="0">
           <div fxLayout="column" fxFlex fxFlex.lt-md="0">
@@ -10,6 +14,7 @@
                 matInput
                 placeholder="Name"
                 [(ngModel)]="aclRole.name"
+                [disabled]="disabled"
                 name="name"
                 fsFormRequired>
             </mat-form-field>
@@ -19,6 +24,7 @@
                 matInput
                 placeholder="Description"
                 [(ngModel)]="aclRole.description"
+                [disabled]="disabled"
                 name="description">
             </mat-form-field>
 
@@ -30,17 +36,18 @@
             <ng-template #levels>
               <div class="level">
                 <fs-radio-group
-                  [(ngModel)]="aclRole.level"
-                  (ngModelChange)="levelChange()"
-                  fsFormRequired
-                  label="Level"
-                  orientation="vertical"
-                  name="level">
+                    [(ngModel)]="aclRole.level"
+                    [disabled]="disabled"
+                    (ngModelChange)="levelChange()"
+                    fsFormRequired
+                    label="Level"
+                    orientation="vertical"
+                    name="level">
                   <mat-radio-button
-                    *ngFor="let item of aclLevels"
-                    [value]="item.value"
-                    [disabled]="!!aclRole.protected">
-                      {{ item.name }}
+                      *ngFor="let item of aclLevels"
+                      [value]="item.value"
+                      [disabled]="!!aclRole.protected">
+                    {{ item.name }}
                   </mat-radio-button>
                 </fs-radio-group>
               </div>
@@ -51,7 +58,7 @@
               <mat-checkbox
                   [(ngModel)]="aclRole.allPermissions"
                   (ngModelChange)="allPermissionsChange($event)"
-                  [disabled]="!!aclRole.protected"
+                  [disabled]="!!aclRole.protected || disabled"
                   name="allPermissions">
                 Enable
               </mat-checkbox>
@@ -62,6 +69,7 @@
                 <fs-label>{{roleConfig.label}}</fs-label>
                 <mat-checkbox
                     [(ngModel)]="aclRoleConfigValues[roleConfig.name]"
+                    [disabled]="disabled"
                     [name]="roleConfig.name">
                   Enable
                 </mat-checkbox>
@@ -75,6 +83,7 @@
                     [(ngModel)]="aclRoleConfigValues[roleConfig.name]"
                     [name]="roleConfig.name"
                     [required]="roleConfig.required"
+                    [disabled]="disabled"
                     [placeholder]="roleConfig.label">
                   <mat-option
                       *ngFor="let item of roleConfig.values"
@@ -106,7 +115,7 @@
                     let-groupChildren="groupChildren"
                     class="permission-group"
                     align="right">
-                  <ng-container *ngIf="!aclRole.allPermissions">
+                  <ng-container *ngIf="!aclRole.allPermissions && !disabled">
                     <fs-menu>
                       <ng-container *ngFor="let access of AclRoleAccesses | builkOptionsFilter: groupChildren">
                         <ng-template
@@ -119,7 +128,7 @@
                   </ng-container>
                 </ng-template>
                 <ng-template fs-list-cell let-row="permission" let-permission="row">
-                  <span *ngIf="aclRole.allPermissions; else elseAll">
+                  <span *ngIf="aclRole.allPermissions || disabled; else elseAll">
                     {{ indexedAccesses[aclRolePermissions[permission.value]] }}
                   </span>
                   <ng-template #elseAll>
@@ -146,8 +155,14 @@
         </div>
       </mat-dialog-content>
       <mat-dialog-actions>
-        <button mat-button type="submit" color="primary">{{ aclRole.id ? 'Save' : 'Create' }}</button>
-        <button mat-button [mat-dialog-close]="null" type="button">Cancel</button>
+        <button
+            *ngIf="!disabled"
+            mat-button
+            type="submit"
+            color="primary">
+          {{ aclRole.id ? 'Save' : 'Create' }}
+        </button>
+        <button mat-button [mat-dialog-close]="null" type="button">{{ disabled ? 'Done' : 'Cancel' }}</button>
       </mat-dialog-actions>
     </ng-container>
   </fs-dialog>
