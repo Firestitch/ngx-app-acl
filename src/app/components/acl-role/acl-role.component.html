@@ -7,12 +7,12 @@
         Role
       </div>
       <mat-dialog-content>
-        <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="40px" fxLayoutGap.lt-md="0">
-          <div fxLayout="column" fxFlex fxFlex.lt-md="0">
-            <mat-form-field>
+        <div class="fs-row.gap-large.align-start">
+          <div class="fs-column left-column">
+            <mat-form-field>            
+              <mat-label>Name</mat-label>
               <input
                 matInput
-                placeholder="Name"
                 [(ngModel)]="aclRole.name"
                 [disabled]="disabled"
                 name="name"
@@ -20,9 +20,9 @@
             </mat-form-field>
 
             <mat-form-field>
+              <mat-label>Description</mat-label>
               <input
                 matInput
-                placeholder="Description"
                 [(ngModel)]="aclRole.description"
                 [disabled]="disabled"
                 name="description">
@@ -64,7 +64,7 @@
               </mat-checkbox>
             </fs-label-field>
 
-            <div fxLayout="column" *ngFor="let roleConfig of roleConfigs">
+            <div class="fs-column" *ngFor="let roleConfig of roleConfigs">
               <fs-label-field *ngIf="roleConfig.type === 'checkbox'">
                 <fs-label>{{roleConfig.label}}</fs-label>
                 <mat-checkbox
@@ -96,7 +96,7 @@
             </div>
           </div>
 
-          <div fxLayout="column" fxFlex="65" fxFlex.lt-md="0" *ngIf="aclRole.level" [hidden]="!levelPermissions.length" class="permissions">
+          <div class="fs-column" *ngIf="aclRole.level" [hidden]="!levelPermissions.length" class="permissions">
             <fs-list [config]="listConfig">
               <fs-list-column title="Permissions">
                 <ng-template fs-list-group-cell let-row="row" class="permission-group">

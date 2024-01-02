@@ -5,9 +5,7 @@
     <ng-template fs-list-cell let-row="row">
       <div
           *ngIf="row.object; else elseObject"
-          fxLayout="row"
-          fxLayoutAlign="start center"
-          fxLayoutGap="10px">
+          class="fs-row.gap-small">
         <fs-badge *ngIf="row.object.imageUrl" shape="circle" image="{{ row.object.imageUrl }}"></fs-badge>
         <span>
           <div><small>{{ row.object.className }}</small></div>
@@ -31,7 +29,7 @@
   <fs-list-column>
     <ng-template fs-list-header>Roles</ng-template>
     <ng-template fs-list-cell let-row="row">
-      <div fxLayout="column" fxLayoutGap="10px">
+      <div class="fs-column">
         <div div *ngFor="let aclEntry of row.aclEntries">
           <ng-container [ngSwitch]="row.level">
             <ng-container *ngSwitchCase="'app'">

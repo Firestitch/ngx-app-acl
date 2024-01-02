@@ -1,4 +1,3 @@
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatButtonModule } from '@angular/material/button';
@@ -42,7 +41,6 @@ import { BulkOptionsFilterPipe } from './pipes/bulk-options-filter.pipe';
     MatButtonModule,
     MatRadioModule,
     MatInputModule,
-    FlexLayoutModule,
 
     FsListModule,
     FsPopoverModule,

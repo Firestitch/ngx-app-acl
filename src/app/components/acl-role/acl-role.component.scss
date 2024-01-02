@@ -1,32 +1,26 @@
-:host {
+.permissions {
+  ::ng-deep {
+    .fs-list-row-group {
+      background-color: #f6f6f6;
+    }
 
-  .permissions {
+    fs-list .access {
+      white-space: nowrap;
+    }
 
-    ::ng-deep {
+    .mat-form-field {
+      width: 100px;
 
-      .fs-list-row-group {
-        background-color: #f6f6f6;
+      .mat-form-field-wrapper {
+        padding-bottom: 0;
       }
 
-      fs-list .access {
-        white-space: nowrap;
+      .mat-form-field-infix {
+        border-top: 0;
       }
 
-      .mat-form-field {
-
-        width: 100px;
-
-        .mat-form-field-wrapper {
-          padding-bottom: 0;
-        }
-
-        .mat-form-field-infix {
-          border-top: 0;
-        }
-
-        .mat-form-field-underline {
-          bottom: 0;
-        }
+      .mat-form-field-underline {
+        bottom: 0;
       }
     }
   }
@@ -46,4 +40,9 @@
   .level {
     width: 100%;
   }
+}
+
+.left-column {
+  width: 40%;
+  max-width: 400px;
 }

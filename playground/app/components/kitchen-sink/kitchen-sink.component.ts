@@ -2,7 +2,6 @@ import { AclEntry } from './../../../../src/app/interfaces/acl-entry';
 import { map } from 'rxjs/operators';
 import { AclRole } from '@firestitch/package';
 import { Component, OnInit } from '@angular/core';
-import { KitchenSinkConfigureComponent } from '../kitchen-sink-configure';
 import { FsExampleComponent } from '@firestitch/example';
 import { FsMessage } from '@firestitch/message';
 import { Observable, of } from 'rxjs';

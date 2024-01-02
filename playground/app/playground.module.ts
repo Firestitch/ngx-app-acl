@@ -20,7 +20,6 @@ import {
   ExamplesComponent
 } from './components';
 import { AppComponent } from './app.component';
-import { KitchenSinkConfigureComponent } from './components/kitchen-sink-configure';
 import { of } from 'rxjs';
 
 import { FS_APP_ACL_CONFIG } from './../../src/app/injectors/app-acl-config.injector';
@@ -49,7 +48,6 @@ const routes: Routes = [
     AppComponent,
     ExamplesComponent,
     KitchenSinkComponent,
-    KitchenSinkConfigureComponent
   ],
   providers: [
     {
