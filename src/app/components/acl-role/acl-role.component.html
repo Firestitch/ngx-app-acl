@@ -96,7 +96,7 @@
             </div>
           </div>
 
-          <div class="fs-column" *ngIf="aclRole.level" [hidden]="!levelPermissions.length" class="permissions">
+          <div *ngIf="aclRole.level" [hidden]="!levelPermissions.length" class="permissions fs-column">
             <fs-list [config]="listConfig">
               <fs-list-column title="Permissions">
                 <ng-template fs-list-group-cell let-row="row" class="permission-group">
