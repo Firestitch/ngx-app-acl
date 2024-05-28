@@ -161,7 +161,6 @@ export class KitchenSinkComponent implements OnInit {
   }
 
   public saveAclObjectEntry = (aclObjectEntry: AclObjectEntry) => {
-
     this.aclEntries = this.aclEntries.filter((item: any) => {
       return aclObjectEntry.level !== item.aclRole.level;
     });

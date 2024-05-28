@@ -119,8 +119,8 @@
                     <fs-menu>
                       <ng-container *ngFor="let access of AclRoleAccesses | builkOptionsFilter: groupChildren">
                         <ng-template
-                          fs-menu-item
-                          (click)="bulkChange(access.value, groupChildren, group)">
+                            fs-menu-item
+                            (click)="bulkChange(access.value, groupChildren, group)">
                           {{ access.name }}
                         </ng-template>
                       </ng-container>
@@ -129,24 +129,30 @@
                 </ng-template>
                 <ng-template fs-list-cell let-row="permission" let-permission="row">
                   <span *ngIf="aclRole.allPermissions || disabled; else elseAll">
-                    {{ indexedAccesses[aclRolePermissions[permission.value]] }}
+                    {{indexedAccesses[aclRolePermissions[permission.value]]}}
                   </span>
                   <ng-template #elseAll>
-                    <mat-form-field>
-                      <mat-select
-                          [(ngModel)]="aclRolePermissions[permission.value]"
-                          [disabled]="!!aclRole.protected"
-                          required
-                          name="access-{{ permission.value }}">
-                        <ng-container *ngFor="let access of AclRoleAccesses">
-                          <mat-option
-                              *ngIf="access.value === 0 || permission.accesses.indexOf(access.value) !== -1"
-                              [value]="access.value">
-                            {{ access.name }}
-                          </mat-option>
-                        </ng-container>
-                      </mat-select>
-                    </mat-form-field>
+                    <ng-container *ngIf="permission|aclRolePermissionAvailable:aclRolePermissions; else permissionRequires">
+                      <mat-form-field>
+                        <mat-select
+                            [(ngModel)]="aclRolePermissions[permission.value]"
+                            [disabled]="!!aclRole.protected"
+                            required
+                            [name]="'access-' + permission.value"
+                            (ngModelChange)="permissionChange()">
+                          <ng-container *ngFor="let access of AclRoleAccesses">
+                            <mat-option
+                                *ngIf="access.value === 0 || permission.accesses.indexOf(access.value) !== -1"
+                                [value]="access.value">
+                              {{access.name}}
+                            </mat-option>
+                          </ng-container>
+                        </mat-select>
+                      </mat-form-field>
+                    </ng-container>
+                    <ng-template #permissionRequires>
+                      Unavailable
+                    </ng-template>
                   </ng-template>
                 </ng-template>
               </fs-list-column>

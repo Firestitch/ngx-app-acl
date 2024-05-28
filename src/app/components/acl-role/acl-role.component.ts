@@ -173,8 +173,15 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
 
     setTimeout(() => {
       this.submitButton.disabled = false;
-      this._cdRef.markForCheck();
+      this.permissionChange();
     });
+  }
+
+  public permissionChange(): void {
+    this.aclRolePermissions = {
+      ...this.aclRolePermissions,        
+    };
+    this._cdRef.markForCheck();
   }
 
   public levelChange(): void {
