@@ -21,6 +21,7 @@ import { forkJoin, Observable, of, Subject } from 'rxjs';
 import { FsAppAclService } from './../../services/app-acl.service';
 import { RoleConfig } from '../../interfaces';
 import { AclRoleAccess } from '../../enums/acl-role-access';
+import { MatButton } from '@angular/material/button';
 
 
 @Component({
@@ -32,6 +33,9 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
 
   @ViewChild(FsListComponent)
   public list: FsListComponent;
+
+  @ViewChild('submit', { static: false })
+  public submitButton: MatButton;
 
   public aclRole: AclRole = null;
   public environment;
@@ -166,6 +170,11 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
           this.aclRolePermissions[permission.value] = value;
         }
       });
+
+    setTimeout(() => {
+      this.submitButton.disabled = false;
+      this._cdRef.markForCheck();
+    });
   }
 
   public levelChange(): void {
