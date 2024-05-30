@@ -100,7 +100,7 @@
             <fs-list [config]="listConfig">
               <fs-list-column title="Permissions">
                 <ng-template fs-list-group-cell let-row="row" class="permission-group">
-                  <small><b>{{row.category || 'General'}}</b></small>
+                  <div class="permission-group">{{row.category || 'General'}}</div>
                 </ng-template>
                 <ng-template fs-list-cell let-row="row">
                   <div class="permission">{{ row.name }}</div>
