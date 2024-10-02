@@ -130,7 +130,7 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
     this.listConfig = {
       status: false,
       paging: false,
-      rowHighlight: false,
+      rowHoverHighlight: false,
       noResults: {
         message: '',
       },
