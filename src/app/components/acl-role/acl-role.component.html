@@ -168,12 +168,11 @@
                   </span>
                   <ng-template #elseAll>
                     <ng-container *ngIf="permission|aclRolePermissionAvailable:aclRolePermissions; else permissionRequires">
-                      <mat-form-field>
+                      <mat-form-field class="form-field-padless">
                         <mat-select
                             [(ngModel)]="aclRolePermissions[permission.value]"
                             [disabled]="!!aclRole.protected"
                             required
-                            class="form-field-padless"
                             [name]="'access-' + permission.value"
                             (ngModelChange)="permissionChange()">
                           <ng-container *ngFor="let access of AclRoleAccesses">
