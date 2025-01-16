@@ -119,7 +119,7 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
         },
         {
           name: 'state',
-          label: 'Show Deleted',
+          label: 'Show deleted',
           type: ItemType.Checkbox,
           unchecked: 'active',
           checked: 'deleted',
