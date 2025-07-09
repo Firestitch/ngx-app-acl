@@ -1,25 +1,26 @@
-import { takeUntil, filter, map, tap } from 'rxjs/operators';
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, Input, ChangeDetectorRef, ViewChildren, QueryList } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 
-import { FsListComponent, FsListConfig } from '@firestitch/list';
-import { ItemType } from '@firestitch/filter';
 import { list } from '@firestitch/common';
+import { ItemType } from '@firestitch/filter';
+import { FsListComponent, FsListConfig } from '@firestitch/list';
 
-import { Subject, Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { filter, map, takeUntil, tap } from 'rxjs/operators';
 
-import { AclRole } from './../../interfaces/acl-role';
-import { AclLevel } from './../../interfaces/acl-level';
-import { FsAclRoleComponent } from '../acl-role/acl-role.component';
-import { FsAppAclService } from '../../services/app-acl.service';
 import { RoleConfig } from '../../interfaces';
+import { FsAppAclService } from '../../services/app-acl.service';
+import { FsAclRoleComponent } from '../acl-role/acl-role.component';
+
+import { AclLevel } from './../../interfaces/acl-level';
+import { AclRole } from './../../interfaces/acl-role';
 
 
 @Component({
   selector: 'fs-acl-roles',
   templateUrl: 'acl-roles.component.html',
-  styleUrls: [ 'acl-roles.component.scss' ],
+  styleUrls: ['acl-roles.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FsAclRolesComponent implements OnInit, OnDestroy {
@@ -49,10 +50,10 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
   ) { }
 
   public ngOnInit(): void {
-    new Observable(observer => {
+    new Observable((observer) => {
       if (this.aclLevels.length) {
-          observer.next(this.aclLevels);
-          observer.complete();
+        observer.next(this.aclLevels);
+        observer.complete();
       } else {
 
         this._appAclService.getLevels()
@@ -115,7 +116,7 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
           label: 'Level',
           type: ItemType.Select,
           values: this.aclLevels,
-          hide: this.aclLevels.length <= 1
+          hide: this.aclLevels.length <= 1,
         },
         {
           name: 'state',
@@ -145,7 +146,7 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
           menu: true,
           label: 'Delete',
           show: (row) => {
-            const hideDelete = !!this.disabledAclRole
+            const hideDelete = this.disabledAclRole
               ? this.disabledAclRole(row)
               : false;
 
@@ -173,9 +174,10 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
       ],
       fetch: (query) => {
         query.permissions = true;
+
         return this.loadAclRoles(query)
           .pipe(
-            map((data) => data)
+            map((data) => data),
           );
       },
     };

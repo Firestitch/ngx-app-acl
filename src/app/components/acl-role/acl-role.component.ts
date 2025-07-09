@@ -5,23 +5,25 @@ import {
   Inject,
   OnDestroy,
   OnInit,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
+
+import { MatButton } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
+import { list } from '@firestitch/common';
+import { FsListComponent, FsListConfig } from '@firestitch/list';
+import { FsMessage } from '@firestitch/message';
+
+import { forkJoin, Observable, of, Subject } from 'rxjs';
+import { takeUntil, tap } from 'rxjs/operators';
+
+import { AclRoleAccess } from '../../enums/acl-role-access';
+import { RoleConfig } from '../../interfaces';
 
 import { AclRoleAccesses } from './../../consts/acl-role-accesses';
 import { AclRole } from './../../interfaces/acl-role';
-import { takeUntil, tap } from 'rxjs/operators';
-
-import { FsMessage } from '@firestitch/message';
-import { list } from '@firestitch/common';
-import { FsListComponent, FsListConfig } from '@firestitch/list';
-
-import { forkJoin, Observable, of, Subject } from 'rxjs';
 import { FsAppAclService } from './../../services/app-acl.service';
-import { RoleConfig } from '../../interfaces';
-import { AclRoleAccess } from '../../enums/acl-role-access';
-import { MatButton } from '@angular/material/button';
 
 
 @Component({
@@ -98,7 +100,7 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
             return {
               ...accum,
               [aclRoleConfig.name]: aclRoleConfig.value,
-            }
+            };
           }, {});
 
         if (this.aclRole.id) {
@@ -214,7 +216,7 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
         return {
           name: roleConfig.name,
           value: this.aclRoleConfigValues[roleConfig.name],
-        }
+        };
       });
 
     const aclRole = {
@@ -235,7 +237,7 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
           this.close(response);
         }),
       );
-  }
+  };
 
   public close(data: any = null): void {
     this._dialogRef.close(data);
@@ -257,21 +259,21 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
 
   private _updatePermissions(): void {
     this.levelPermissions = this.permissions
-    .filter((permission) => {
-      return permission.levels.some((item) => {
-        return item === this.aclRole.level;
+      .filter((permission) => {
+        return permission.levels.some((item) => {
+          return item === this.aclRole.level;
+        });
       });
-    });
   }
 
   private _updateRoleConfigs(): void {
     if(this._data.loadRoleConfigs) {
       this._data.loadRoleConfigs()
-      .subscribe((roleConfigs: RoleConfig[]) => {
-        this.roleConfigs = roleConfigs
-          .filter((roleConfig) => roleConfig.level === this.aclRole.level);
-        this._cdRef.markForCheck();
-      });
+        .subscribe((roleConfigs: RoleConfig[]) => {
+          this.roleConfigs = roleConfigs
+            .filter((roleConfig) => roleConfig.level === this.aclRole.level);
+          this._cdRef.markForCheck();
+        });
     }
   }
 
