@@ -4,32 +4,33 @@
       Context
     </ng-template>
     <ng-template
-        fs-list-cell
-        let-row="row">
-      <div
-          *ngIf="row.object; else elseObject"
+      fs-list-cell
+      let-row="row">
+      @if (row.object) {
+        <div
           class="fs-row.gap-sm">
-        <fs-badge
-          *ngIf="row.object.imageUrl"
-          shape="circle"
-          image="{{ row.object.imageUrl }}">
-        </fs-badge>
-        <span>
-          <div>
-            <small>
-              {{ row.object.className }}
-            </small>
-          </div>
-          <a (click)="update(row)">
-            {{ row.object.name }}
-          </a>
-        </span>
-      </div>
-      <ng-template #elseObject>
+          @if (row.object.imageUrl) {
+            <fs-badge
+              shape="circle"
+              image="{{ row.object.imageUrl }}">
+            </fs-badge>
+          }
+          <span>
+            <div>
+              <small>
+                {{ row.object.className }}
+              </small>
+            </div>
+            <a (click)="update(row)">
+              {{ row.object.name }}
+            </a>
+          </span>
+        </div>
+      } @else {
         <a (click)="update(row)">
           App
         </a>
-      </ng-template>
+      }
     </ng-template>
   </fs-list-column>
   <fs-list-column [show]="environmentShow">
@@ -37,8 +38,8 @@
       {{ environmentLabel }}
     </ng-template>
     <ng-template
-        fs-list-cell
-        let-row="row">
+      fs-list-cell
+      let-row="row">
       {{ row.environment?.name }}
     </ng-template>
   </fs-list-column>
@@ -47,29 +48,31 @@
       Roles
     </ng-template>
     <ng-template
-        fs-list-cell
-        let-row="row">
+      fs-list-cell
+      let-row="row">
       <div class="fs-column">
-        <div
+        @for (aclEntry of row.aclEntries; track aclEntry) {
+          <div
             div
-            *ngFor="let aclEntry of row.aclEntries">
-          <ng-container [ngSwitch]="row.level">
-            <ng-container *ngSwitchCase="'app'">
-              <fs-acl-role-popover
+            >
+            @switch (row.level) {
+              @case ('app') {
+                <fs-acl-role-popover
                   [aclRole]="aclEntry.aclRole"
                   objectName="App">
-                {{ aclEntry.aclRole.name }}
-              </fs-acl-role-popover>
-            </ng-container>
-            <ng-container *ngSwitchDefault>
-              <ng-container *ngIf="row.object">
-                <fs-acl-role-popover [aclRole]="aclEntry.aclRole">
                   {{ aclEntry.aclRole.name }}
                 </fs-acl-role-popover>
-              </ng-container>
-            </ng-container>
-          </ng-container>
-        </div>
+              }
+              @default {
+                @if (row.object) {
+                  <fs-acl-role-popover [aclRole]="aclEntry.aclRole">
+                    {{ aclEntry.aclRole.name }}
+                  </fs-acl-role-popover>
+                }
+              }
+            }
+          </div>
+        }
       </div>
     </ng-template>
   </fs-list-column>

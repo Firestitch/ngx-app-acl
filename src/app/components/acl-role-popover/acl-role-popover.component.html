@@ -4,16 +4,19 @@
 </fs-popover>
 
 <ng-template #popover>
-  <div class="name small">{{aclRole.name}}<span *ngIf="objectName">: {{objectName}}</span></div>
+  <div class="name small">{{aclRole.name}}@if (objectName) {
+    <span>: {{objectName}}</span>
+  }</div>
 
-  <ng-container *ngIf="permissions.length; else nonePermission">
-    <div *ngFor="let permission of permissions" class="permission">
-      <div>{{permission.name}}</div>
-      <div class="small">{{permission.description}}</div>
-    </div>
-  </ng-container>
-
-  <ng-template #nonePermission>
+  @if (permissions.length) {
+    @for (permission of permissions; track permission) {
+      <div class="permission">
+        <div>{{permission.name}}</div>
+        <div class="small">{{permission.description}}</div>
+      </div>
+    }
+  } @else {
     None
-  </ng-template>
+  }
+
 </ng-template>

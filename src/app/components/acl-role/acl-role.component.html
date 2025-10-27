@@ -1,15 +1,15 @@
 <form
-    fsForm
-    [submit]="save">
+  fsForm
+  [submit]="save">
   <fs-dialog>
-    <ng-container *ngIf="aclRole">
+    @if (aclRole) {
       <div mat-dialog-title>
-        <ng-container *ngIf="!disabled">
+        @if (!disabled) {
           {{ aclRole.id ? 'Edit' : 'Create' }}
-        </ng-container>
-        <ng-container *ngIf="disabled">
+        }
+        @if (disabled) {
           View
-        </ng-container>
+        }
         role
       </div>
       <mat-dialog-content>
@@ -36,181 +36,195 @@
                 [disabled]="disabled"
                 name="description">
             </mat-form-field>
-            <fs-label-field *ngIf="aclRole.id || aclLevels.length === 1; else levels">
-              <fs-label>
-                Level
-              </fs-label>
-              {{ indexedAclLevels[aclRole.level] }}
-            </fs-label-field>
-            <ng-template #levels>
+            @if (aclRole.id || aclLevels.length === 1) {
+              <fs-label-field>
+                <fs-label>
+                  Level
+                </fs-label>
+                {{ indexedAclLevels[aclRole.level] }}
+              </fs-label-field>
+            } @else {
               <div class="level">
                 <fs-radio-group
-                    [(ngModel)]="aclRole.level"
-                    [disabled]="disabled"
-                    (ngModelChange)="levelChange()"
-                    fsFormRequired
-                    label="Level"
-                    orientation="vertical"
-                    name="level">
-                  <mat-radio-button
-                      *ngFor="let item of aclLevels"
+                  [(ngModel)]="aclRole.level"
+                  [disabled]="disabled"
+                  (ngModelChange)="levelChange()"
+                  fsFormRequired
+                  label="Level"
+                  orientation="vertical"
+                  name="level">
+                  @for (item of aclLevels; track item) {
+                    <mat-radio-button
                       [value]="item.value"
                       [disabled]="!!aclRole.protected">
-                    {{ item.name }}
-                  </mat-radio-button>
+                      {{ item.name }}
+                    </mat-radio-button>
+                  }
                 </fs-radio-group>
               </div>
-            </ng-template>
-            <fs-label-field *ngIf="levelPermissions.length">
-              <fs-label>
-                All permissions
-              </fs-label>
-              <mat-checkbox
+            }
+            @if (levelPermissions.length) {
+              <fs-label-field>
+                <fs-label>
+                  All permissions
+                </fs-label>
+                <mat-checkbox
                   [(ngModel)]="aclRole.allPermissions"
                   (ngModelChange)="allPermissionsChange($event)"
                   [disabled]="!!aclRole.protected || disabled"
                   name="allPermissions">
-                Enable
-              </mat-checkbox>
-            </fs-label-field>
-            <div
-                class="fs-column"
-                *ngFor="let roleConfig of roleConfigs">
-              <fs-label-field *ngIf="roleConfig.type === 'checkbox'">
-                <fs-label>
-                  {{ roleConfig.label }}
-                </fs-label>
-                <mat-checkbox
-                    [(ngModel)]="aclRoleConfigValues[roleConfig.name]"
-                    [disabled]="disabled"
-                    [name]="roleConfig.name">
                   Enable
                 </mat-checkbox>
-                <fs-label-message>
-                  <mat-hint>
-                    {{ roleConfig.description }}
-                  </mat-hint>
-                </fs-label-message>
               </fs-label-field>
-              <mat-form-field *ngIf="roleConfig.type === 'select'">
-                <mat-select
-                    [(ngModel)]="aclRoleConfigValues[roleConfig.name]"
-                    [name]="roleConfig.name"
-                    [required]="roleConfig.required"
-                    [disabled]="disabled"
-                    [placeholder]="roleConfig.label">
-                  <mat-option
-                      *ngFor="let item of roleConfig.values"
-                      [value]="item.value">
-                    {{ item.name }}
-                  </mat-option>
-                </mat-select>
-                <mat-hint>
-                  {{ roleConfig.description }}
-                </mat-hint>
-              </mat-form-field>
-            </div>
+            }
+            @for (roleConfig of roleConfigs; track roleConfig) {
+              <div
+                class="fs-column"
+                >
+                @if (roleConfig.type === 'checkbox') {
+                  <fs-label-field>
+                    <fs-label>
+                      {{ roleConfig.label }}
+                    </fs-label>
+                    <mat-checkbox
+                      [(ngModel)]="aclRoleConfigValues[roleConfig.name]"
+                      [disabled]="disabled"
+                      [name]="roleConfig.name">
+                      Enable
+                    </mat-checkbox>
+                    <fs-label-message>
+                      <mat-hint>
+                        {{ roleConfig.description }}
+                      </mat-hint>
+                    </fs-label-message>
+                  </fs-label-field>
+                }
+                @if (roleConfig.type === 'select') {
+                  <mat-form-field>
+                    <mat-select
+                      [(ngModel)]="aclRoleConfigValues[roleConfig.name]"
+                      [name]="roleConfig.name"
+                      [required]="roleConfig.required"
+                      [disabled]="disabled"
+                      [placeholder]="roleConfig.label">
+                      @for (item of roleConfig.values; track item) {
+                        <mat-option
+                          [value]="item.value">
+                          {{ item.name }}
+                        </mat-option>
+                      }
+                    </mat-select>
+                    <mat-hint>
+                      {{ roleConfig.description }}
+                    </mat-hint>
+                  </mat-form-field>
+                }
+              </div>
+            }
           </div>
-          <div
-              *ngIf="aclRole.level"
+          @if (aclRole.level) {
+            <div
               [hidden]="!levelPermissions.length"
               class="permissions fs-column">
-            <fs-list [config]="listConfig">
-              <fs-list-column title="Permissions">
-                <ng-template
+              <fs-list [config]="listConfig">
+                <fs-list-column title="Permissions">
+                  <ng-template
                     fs-list-group-cell
                     let-row="row"
                     class="permission-group">
-                  <div class="permission-group">
-                    {{ row.category || 'General' }}
-                  </div>
-                </ng-template>
-                <ng-template
+                    <div class="permission-group">
+                      {{ row.category || 'General' }}
+                    </div>
+                  </ng-template>
+                  <ng-template
                     fs-list-cell
                     let-row="row">
-                  <div class="permission">
-                    {{ row.name }}
-                  </div>
-                  <div class="description small">
-                    {{ row.description }}
-                  </div>
-                </ng-template>
-              </fs-list-column>
-              <fs-list-column
+                    <div class="permission">
+                      {{ row.name }}
+                    </div>
+                    <div class="description small">
+                      {{ row.description }}
+                    </div>
+                  </ng-template>
+                </fs-list-column>
+                <fs-list-column
                   title="Access"
                   width="1%"
                   class="access">
-                <ng-template
+                  <ng-template
                     fs-list-group-cell
                     let-row="row"
                     let-group="group"
                     let-groupChildren="groupChildren"
                     class="permission-group"
                     align="right">
-                  <ng-container *ngIf="!aclRole.allPermissions && !disabled">
-                    <fs-menu>
-                      <ng-container *ngFor="let access of AclRoleAccesses | builkOptionsFilter: groupChildren">
-                        <ng-template
+                    @if (!aclRole.allPermissions && !disabled) {
+                      <fs-menu>
+                        @for (access of AclRoleAccesses | builkOptionsFilter: groupChildren; track access) {
+                          <ng-template
                             fs-menu-item
                             (click)="bulkChange(access.value, groupChildren, group)">
-                          {{ access.name }}
-                        </ng-template>
-                      </ng-container>
-                    </fs-menu>
-                  </ng-container>
-                </ng-template>
-                <ng-template
+                            {{ access.name }}
+                          </ng-template>
+                        }
+                      </fs-menu>
+                    }
+                  </ng-template>
+                  <ng-template
                     fs-list-cell
                     let-row="permission"
                     let-permission="row">
-                  <span *ngIf="aclRole.allPermissions || disabled; else elseAll">
-                    {{ indexedAccesses[aclRolePermissions[permission.value]] }}
-                  </span>
-                  <ng-template #elseAll>
-                    <ng-container *ngIf="permission|aclRolePermissionAvailable:aclRolePermissions; else permissionRequires">
-                      <mat-form-field class="form-field-padless">
-                        <mat-select
+                    @if (aclRole.allPermissions || disabled) {
+                      <span>
+                        {{ indexedAccesses[aclRolePermissions[permission.value]] }}
+                      </span>
+                    } @else {
+                      @if (permission|aclRolePermissionAvailable:aclRolePermissions) {
+                        <mat-form-field class="form-field-padless">
+                          <mat-select
                             [(ngModel)]="aclRolePermissions[permission.value]"
                             [disabled]="!!aclRole.protected"
                             required
                             [name]="'access-' + permission.value"
                             (ngModelChange)="permissionChange()">
-                          <ng-container *ngFor="let access of AclRoleAccesses">
-                            <mat-option
-                                *ngIf="access.value === 0 || permission.accesses.indexOf(access.value) !== -1"
-                                [value]="access.value">
-                              {{ access.name }}
-                            </mat-option>
-                          </ng-container>
-                        </mat-select>
-                      </mat-form-field>
-                    </ng-container>
-                    <ng-template #permissionRequires>
-                      Unavailable
-                    </ng-template>
+                            @for (access of AclRoleAccesses; track access) {
+                              @if (access.value === 0 || permission.accesses.indexOf(access.value) !== -1) {
+                                <mat-option
+                                  [value]="access.value">
+                                  {{ access.name }}
+                                </mat-option>
+                              }
+                            }
+                          </mat-select>
+                        </mat-form-field>
+                      } @else {
+                        Unavailable
+                      }
+                    }
                   </ng-template>
-                </ng-template>
-              </fs-list-column>
-            </fs-list>
-          </div>
+                </fs-list-column>
+              </fs-list>
+            </div>
+          }
         </div>
       </mat-dialog-content>
       <mat-dialog-actions>
-        <button
-            *ngIf="!disabled"
+        @if (!disabled) {
+          <button
             #submit
             mat-button
             type="submit"
             color="primary">
-          {{ aclRole.id ? 'Save' : 'Create' }}
-        </button>
+            {{ aclRole.id ? 'Save' : 'Create' }}
+          </button>
+        }
         <button
-            mat-button
-            [mat-dialog-close]="null"
-            type="button">
+          mat-button
+          [mat-dialog-close]="null"
+          type="button">
           {{ disabled ? 'Done' : 'Cancel' }}
         </button>
       </mat-dialog-actions>
-    </ng-container>
+    }
   </fs-dialog>
 </form>

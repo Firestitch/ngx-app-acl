@@ -1,29 +1,32 @@
-<fs-list [config]="listConfig" *ngIf="listConfig">
-  <fs-list-column title="Name" name="name" [sortable]="true">
-    <ng-template fs-list-cell let-row="row">
-      <ng-container *ngIf="row.state !== 'deleted' else deletedRole">
-        <a (click)="openDialog(row)">{{ row.name }}</a>
-      </ng-container>
-      <ng-template #deletedRole>
-        {{ row.name }}
+@if (listConfig) {
+  <fs-list [config]="listConfig">
+    <fs-list-column title="Name" name="name" [sortable]="true">
+      <ng-template fs-list-cell let-row="row">
+        @if (row.state !== 'deleted') {
+          <a (click)="openDialog(row)">{{ row.name }}</a>
+        } @else {
+          {{ row.name }}
+        }
+        <div class="small">{{row.description}}</div>
       </ng-template>
-      <div class="small">{{row.description}}</div>
-    </ng-template>
-  </fs-list-column>
-  <fs-list-column name="hierarchy" title="Level" [sortable]="true">
-    <ng-template fs-list-cell let-row="row">
-      {{ indexedAclRoleLevels[row.level] }}
-    </ng-template>
-  </fs-list-column>
-  <fs-list-column title="Permissions">
-    <ng-template fs-list-cell let-row="row">
-      <div class="permissions">
-        <ng-container *ngFor="let permission of row.permissions">
-          <span *ngIf="permission.access" class="permission">
-            <acl-permission-popover [permission]="permission">{{permission.name}}</acl-permission-popover>
-          </span>
-        </ng-container>
-      </div>
-    </ng-template>
-  </fs-list-column>
-</fs-list>
+    </fs-list-column>
+    <fs-list-column name="hierarchy" title="Level" [sortable]="true">
+      <ng-template fs-list-cell let-row="row">
+        {{ indexedAclRoleLevels[row.level] }}
+      </ng-template>
+    </fs-list-column>
+    <fs-list-column title="Permissions">
+      <ng-template fs-list-cell let-row="row">
+        <div class="permissions">
+          @for (permission of row.permissions; track permission) {
+            @if (permission.access) {
+              <span class="permission">
+                <acl-permission-popover [permission]="permission">{{permission.name}}</acl-permission-popover>
+              </span>
+            }
+          }
+        </div>
+      </ng-template>
+    </fs-list-column>
+  </fs-list>
+}

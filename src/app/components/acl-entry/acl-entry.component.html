@@ -2,19 +2,22 @@
   <fs-dialog>
     <div mat-dialog-title>{{ titleEdit? titleEdit : titleAdd }}</div>
     <mat-dialog-content>
-      <div *ngIf="aclObjectRole">
-        <fs-label-field *ngIf="aclObjectEntry.object">
-          <fs-label>{{indexedAclRoleLevels[aclObjectEntry.level]}}</fs-label>
-          {{aclObjectEntry.object.name}}
-        </fs-label-field>
-
-        <fs-acl-object-roles
-          [aclRoles]="aclRoles"
-          [aclObjectRoles]="[aclObjectRole]"
-          [required]="required"
-          (change)="aclObjectRoleChange($event)">
-        </fs-acl-object-roles>
-      </div>
+      @if (aclObjectRole) {
+        <div>
+          @if (aclObjectEntry.object) {
+            <fs-label-field>
+              <fs-label>{{indexedAclRoleLevels[aclObjectEntry.level]}}</fs-label>
+              {{aclObjectEntry.object.name}}
+            </fs-label-field>
+          }
+          <fs-acl-object-roles
+            [aclRoles]="aclRoles"
+            [aclObjectRoles]="[aclObjectRole]"
+            [required]="required"
+            (change)="aclObjectRoleChange($event)">
+          </fs-acl-object-roles>
+        </div>
+      }
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button type="submit" color="primary">Save</button>

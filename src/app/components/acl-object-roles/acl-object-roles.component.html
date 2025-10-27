@@ -1,5 +1,5 @@
-<ng-container *ngIf="!multiple">
-  <ng-container *ngFor="let aclObjectRole of aclObjectRoles">
+@if (!multiple) {
+  @for (aclObjectRole of aclObjectRoles; track aclObjectRole) {
     <fs-checkbox-group
       [(ngModel)]="aclObjectRole.aclRoles"
       (ngModelChange)="changed()"
@@ -9,14 +9,16 @@
       [label]="rolesLabel"
       [fsFormRequired]="required"
       orientation="vertical">
-      <mat-checkbox [disabled]="disabled" *ngFor="let aclRole of aclRoles" [value]="$any(aclRole)">
-        {{ aclRole.name }}
-      </mat-checkbox>
+      @for (aclRole of aclRoles; track aclRole) {
+        <mat-checkbox [disabled]="disabled" [value]="$any(aclRole)">
+          {{ aclRole.name }}
+        </mat-checkbox>
+      }
     </fs-checkbox-group>
-  </ng-container>
-</ng-container>
+  }
+}
 
-<ng-container *ngIf="multiple">
+@if (multiple) {
   <table>
     <tr>
       <td>
@@ -26,23 +28,27 @@
         <small>{{rolesLabel}}</small>
       </td>
     </tr>
-    <tr *ngFor="let aclObjectRole of aclObjectRoles">
-      <td>{{aclObjectRole.object.name}}</td>
-      <td>
-        <mat-form-field class="form-field-padless">
-          <mat-select
-            [(ngModel)]="aclObjectRole.aclRoles"
-            multiple="true"
-            [disabled]="disabled"
-            [compareWith]="compareAclRole"
-            (ngModelChange)="changed()"
-            name="aclRole_{{ aclObjectRole.object.id }}">
-            <mat-option *ngFor="let aclRole of aclRoles" [value]="aclRole">
-              {{ aclRole.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </td>
-    </tr>
+    @for (aclObjectRole of aclObjectRoles; track aclObjectRole) {
+      <tr>
+        <td>{{aclObjectRole.object.name}}</td>
+        <td>
+          <mat-form-field class="form-field-padless">
+            <mat-select
+              [(ngModel)]="aclObjectRole.aclRoles"
+              multiple="true"
+              [disabled]="disabled"
+              [compareWith]="compareAclRole"
+              (ngModelChange)="changed()"
+              name="aclRole_{{ aclObjectRole.object.id }}">
+              @for (aclRole of aclRoles; track aclRole) {
+                <mat-option [value]="aclRole">
+                  {{ aclRole.name }}
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </td>
+      </tr>
+    }
   </table>
-</ng-container>
+}
