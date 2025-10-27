@@ -1,5 +1,5 @@
 import { takeUntil, map } from 'rxjs/operators';
-import { Component, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, Input, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Subject, Observable } from 'rxjs';
@@ -27,6 +27,10 @@ import { FsAclRolePopoverComponent } from '../acl-role-popover/acl-role-popover.
     imports: [FsListModule, FsBadgeModule, FsAclRolePopoverComponent]
 })
 export class FsAclEntriesComponent implements OnInit, OnDestroy {
+  private readonly _appAclService = inject(FsAppAclService);
+  private readonly _dialog = inject(MatDialog);
+  private _confirm = inject(FsPrompt);
+
 
   @Input() public loadAclEntries: (query: any) => Observable<AclEntry[]>;
   @Input() public loadAclRoles: (query: any) => Observable<AclRole[]>;
@@ -43,12 +47,6 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
   public permissions: any[] = [];
 
   private _destroy$ = new Subject();
-
-  constructor(
-    private readonly _appAclService: FsAppAclService,
-    private readonly _dialog: MatDialog,
-    private _confirm: FsPrompt,
-  ) { }
 
   public ngOnInit(): void {
     this._appAclService.getPermissions()

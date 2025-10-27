@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { list } from '@firestitch/common';
 
@@ -16,13 +16,11 @@ import { AclLevel } from './../interfaces/acl-level';
   providedIn: 'root',
 })
 export class FsAppAclService {
+  private _appAclConfig = inject<AppAclConfig>(FS_APP_ACL_CONFIG);
+
 
   private _permissions$: ReplaySubject<AclPermission[]>;
   private _levels$: ReplaySubject<AclLevel[]>;
-
-  constructor(
-    @Inject(FS_APP_ACL_CONFIG) private _appAclConfig: AppAclConfig,
-  ) { }
 
   public getPermissions() {
 

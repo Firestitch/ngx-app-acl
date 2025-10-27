@@ -1,7 +1,7 @@
 import { AclEntry } from './../../../../src/app/interfaces/acl-entry';
 import { map } from 'rxjs/operators';
 import { AclRole } from '@firestitch/package';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FsExampleComponent } from '@firestitch/example';
 import { FsMessage } from '@firestitch/message';
 import { Observable, of } from 'rxjs';
@@ -23,6 +23,9 @@ import { FsAclObjectRolesComponent } from '../../../../src/app/components/acl-ob
     imports: [FsAclRolesComponent, FsAclEntriesComponent, FormsModule, FsAclObjectRolesComponent]
 })
 export class KitchenSinkComponent implements OnInit {
+  private exampleComponent = inject(FsExampleComponent);
+  private message = inject(FsMessage);
+
 
   public config = {};
   public aclObjectRole: AclObjectRole;
@@ -33,10 +36,7 @@ export class KitchenSinkComponent implements OnInit {
   public aclRoles: AclRole[] = [];
   public aclEntries: AclEntry[];
 
-  constructor(
-    private exampleComponent: FsExampleComponent,
-    private message: FsMessage,
-  ) {
+  constructor() {
     this.aclObjectRole = {
       object: null,
       aclRoles: [

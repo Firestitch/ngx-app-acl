@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, QueryList, ViewChildren, inject } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 
@@ -27,6 +27,9 @@ import { FsAclPermissionPopoverComponent } from '../acl-permission-popover/acl-p
     imports: [FsListModule, FsAclPermissionPopoverComponent],
 })
 export class FsAclRolesComponent implements OnInit, OnDestroy {
+  private readonly _appAclService = inject(FsAppAclService);
+  private readonly _dialog = inject(MatDialog);
+
 
   @Input() deleteAclRole: (aclRole: AclRole) => Observable<AclRole>;
   @Input() restoreAclRole: (aclRole: AclRole) => Observable<AclRole>;
@@ -46,11 +49,6 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
   public indexedAclRoleLevels: { [value: string]: string } = {};
 
   private _destroy$ = new Subject();
-
-  constructor(
-    private readonly _appAclService: FsAppAclService,
-    private readonly _dialog: MatDialog,
-  ) { }
 
   public ngOnInit(): void {
     new Observable((observer) => {

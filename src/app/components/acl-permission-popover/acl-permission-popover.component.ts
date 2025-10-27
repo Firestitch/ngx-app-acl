@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import { FsAppAclService } from './../../services/app-acl.service';
 import { FsPopoverModule } from '@firestitch/popover';
 
@@ -10,14 +10,12 @@ import { FsPopoverModule } from '@firestitch/popover';
     imports: [FsPopoverModule]
 })
 export class FsAclPermissionPopoverComponent implements OnInit {
+  private _appAclService = inject(FsAppAclService);
+
 
   @Input() permission;
 
   public description;
-
-  public constructor(
-    private _appAclService: FsAppAclService
-  ) { }
 
   public ngOnInit() {
     this._appAclService.getPermissions()

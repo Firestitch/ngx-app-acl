@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 
 import { FsMessage } from '@firestitch/message';
@@ -40,6 +40,11 @@ import { MatButton } from '@angular/material/button';
     ],
 })
 export class FsAclEntryComponent implements OnInit {
+  private readonly _appAclService = inject(FsAppAclService);
+  private readonly _dialogRef = inject<MatDialogRef<FsAclEntryComponent>>(MatDialogRef);
+  private readonly _message = inject(FsMessage);
+  private readonly _data = inject<AclEntryData>(MAT_DIALOG_DATA);
+
 
   public aclRoles: AclRole[] = [];
   public aclObjectEntry: AclObjectEntry;
@@ -50,12 +55,9 @@ export class FsAclEntryComponent implements OnInit {
   public titleAdd = 'Assign Roles';
   public required = true;
 
-  constructor(
-    private readonly _appAclService: FsAppAclService,
-    private readonly _dialogRef: MatDialogRef<FsAclEntryComponent>,
-    private readonly _message: FsMessage,
-    @Inject(MAT_DIALOG_DATA) private readonly _data: AclEntryData
-  ) {
+  constructor() {
+    const _data = this._data;
+
     this.aclObjectEntry = { ..._data.aclObjectEntry };
     this.required = _data.required ?? true;
 

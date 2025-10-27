@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Inject,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 
 import { MatButton } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
@@ -73,6 +65,12 @@ import { AclRolePermissionAvailablePipe } from '../../pipes/acl-role-permission-
     ],
 })
 export class FsAclRoleComponent implements OnInit, OnDestroy {
+  private readonly _data = inject(MAT_DIALOG_DATA);
+  private readonly _appAclService = inject(FsAppAclService);
+  private readonly _dialogRef = inject<MatDialogRef<FsAclRoleComponent>>(MatDialogRef);
+  private readonly _message = inject(FsMessage);
+  private _cdRef = inject(ChangeDetectorRef);
+
 
   @ViewChild(FsListComponent)
   public list: FsListComponent;
@@ -98,14 +96,6 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
   public disabled: boolean;
 
   private _destroy$ = new Subject();
-
-  constructor(
-    @Inject(MAT_DIALOG_DATA) private readonly _data: any,
-    private readonly _appAclService: FsAppAclService,
-    private readonly _dialogRef: MatDialogRef<FsAclRoleComponent>,
-    private readonly _message: FsMessage,
-    private _cdRef: ChangeDetectorRef,
-  ) { }
 
   public ngOnInit(): void {
     forkJoin(
