@@ -5,7 +5,8 @@ import { AclPermission } from '../interfaces/acl-permission';
 
 
 @Pipe({
-  name: 'builkOptionsFilter'
+    name: 'builkOptionsFilter',
+    standalone: true
 })
 export class BulkOptionsFilterPipe implements PipeTransform {
 

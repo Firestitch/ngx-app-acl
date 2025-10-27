@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 
 @Pipe({
-  name: 'aclRolePermissionAvailable'
+    name: 'aclRolePermissionAvailable',
+    standalone: true
 })
 export class AclRolePermissionAvailablePipe implements PipeTransform {
 

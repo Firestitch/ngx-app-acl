@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { list } from '@firestitch/common';
 import { ItemType } from '@firestitch/filter';
-import { FsListComponent, FsListConfig } from '@firestitch/list';
+import { FsListComponent, FsListConfig, FsListModule } from '@firestitch/list';
 
 import { Observable, Subject } from 'rxjs';
 import { filter, map, takeUntil, tap } from 'rxjs/operators';
@@ -15,13 +15,16 @@ import { FsAclRoleComponent } from '../acl-role/acl-role.component';
 
 import { AclLevel } from './../../interfaces/acl-level';
 import { AclRole } from './../../interfaces/acl-role';
+import { FsAclPermissionPopoverComponent } from '../acl-permission-popover/acl-permission-popover.component';
 
 
 @Component({
-  selector: 'fs-acl-roles',
-  templateUrl: 'acl-roles.component.html',
-  styleUrls: ['acl-roles.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'fs-acl-roles',
+    templateUrl: 'acl-roles.component.html',
+    styleUrls: ['acl-roles.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [FsListModule, FsAclPermissionPopoverComponent],
 })
 export class FsAclRolesComponent implements OnInit, OnDestroy {
 

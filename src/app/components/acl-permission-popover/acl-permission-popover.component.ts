@@ -1,10 +1,13 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
 import { FsAppAclService } from './../../services/app-acl.service';
+import { FsPopoverModule } from '@firestitch/popover';
 
 @Component({
-  selector: 'acl-permission-popover',
-  templateUrl: './acl-permission-popover.component.html',
-  styleUrls: ['./acl-permission-popover.component.scss']
+    selector: 'acl-permission-popover',
+    templateUrl: './acl-permission-popover.component.html',
+    styleUrls: ['./acl-permission-popover.component.scss'],
+    standalone: true,
+    imports: [FsPopoverModule]
 })
 export class FsAclPermissionPopoverComponent implements OnInit {
 

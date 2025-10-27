@@ -6,7 +6,7 @@ import { Subject, Observable } from 'rxjs';
 
 import { sortBy, groupBy } from 'lodash-es';
 
-import { FsListAction, FsListComponent, FsListConfig } from '@firestitch/list';
+import { FsListAction, FsListComponent, FsListConfig, FsListModule } from '@firestitch/list';
 import { FsPrompt } from '@firestitch/prompt';
 
 import { FsAppAclService } from '../../services/app-acl.service';
@@ -15,12 +15,16 @@ import { AclEntry } from '../../interfaces/acl-entry';
 import { AclRole } from '../../interfaces/acl-role';
 import { AclObjectEntry } from '../../interfaces/acl-object-entry';
 import { FsAclEntryComponent } from '../acl-entry/acl-entry.component';
+import { FsBadgeModule } from '@firestitch/badge';
+import { FsAclRolePopoverComponent } from '../acl-role-popover/acl-role-popover.component';
 
 
 @Component({
-  selector: 'fs-acl-entries',
-  templateUrl: './acl-entries.component.html',
-  styleUrls: ['./acl-entries.component.scss']
+    selector: 'fs-acl-entries',
+    templateUrl: './acl-entries.component.html',
+    styleUrls: ['./acl-entries.component.scss'],
+    standalone: true,
+    imports: [FsListModule, FsBadgeModule, FsAclRolePopoverComponent]
 })
 export class FsAclEntriesComponent implements OnInit, OnDestroy {
 

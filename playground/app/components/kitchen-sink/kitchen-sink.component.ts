@@ -9,12 +9,18 @@ import { AclObjectRole } from './../../../../src/app/interfaces/acl-object-role'
 import { AclObjectEntry } from './../../../../src/app/interfaces/acl-object-entry';
 import { AclRoleConfig } from 'src/app/interfaces/acl-role-config';
 import { RoleConfig } from 'src/app/interfaces';
+import { FsAclRolesComponent } from '../../../../src/app/components/acl-roles/acl-roles.component';
+import { FsAclEntriesComponent } from '../../../../src/app/components/acl-entries/acl-entries.component';
+import { FormsModule } from '@angular/forms';
+import { FsAclObjectRolesComponent } from '../../../../src/app/components/acl-object-roles/acl-object-roles.component';
 
 
 @Component({
-  selector: 'kitchen-sink',
-  templateUrl: './kitchen-sink.component.html',
-  styleUrls: ['./kitchen-sink.component.scss']
+    selector: 'kitchen-sink',
+    templateUrl: './kitchen-sink.component.html',
+    styleUrls: ['./kitchen-sink.component.scss'],
+    standalone: true,
+    imports: [FsAclRolesComponent, FsAclEntriesComponent, FormsModule, FsAclObjectRolesComponent]
 })
 export class KitchenSinkComponent implements OnInit {
 

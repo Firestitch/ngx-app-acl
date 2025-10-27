@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 
 import { FsMessage } from '@firestitch/message';
 
@@ -12,11 +12,32 @@ import { AclObjectEntry } from './../../interfaces/acl-object-entry';
 import { AclEntry } from './../../interfaces/acl-entry';
 import { FsAppAclService } from './../../services/app-acl.service';
 import { tap } from 'rxjs/operators';
+import { FormsModule } from '@angular/forms';
+import { FsFormModule } from '@firestitch/form';
+import { FsDialogModule } from '@firestitch/dialog';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { FsLabelModule } from '@firestitch/label';
+import { FsAclObjectRolesComponent } from '../acl-object-roles/acl-object-roles.component';
+import { MatButton } from '@angular/material/button';
 
 
 @Component({
-  templateUrl: './acl-entry.component.html',
-  styleUrls: ['./acl-entry.component.scss'],
+    templateUrl: './acl-entry.component.html',
+    styleUrls: ['./acl-entry.component.scss'],
+    standalone: true,
+    imports: [
+        FormsModule,
+        FsFormModule,
+        FsDialogModule,
+        MatDialogTitle,
+        CdkScrollable,
+        MatDialogContent,
+        FsLabelModule,
+        FsAclObjectRolesComponent,
+        MatDialogActions,
+        MatButton,
+        MatDialogClose,
+    ],
 })
 export class FsAclEntryComponent implements OnInit {
 

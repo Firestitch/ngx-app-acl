@@ -1,10 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FsAppAclService } from './../../services/app-acl.service';
+import { FsPopoverModule } from '@firestitch/popover';
 
 @Component({
-  selector: 'fs-acl-role-popover',
-  templateUrl: './acl-role-popover.component.html',
-  styleUrls: ['./acl-role-popover.component.scss']
+    selector: 'fs-acl-role-popover',
+    templateUrl: './acl-role-popover.component.html',
+    styleUrls: ['./acl-role-popover.component.scss'],
+    standalone: true,
+    imports: [FsPopoverModule]
 })
 export class FsAclRolePopoverComponent implements OnInit {
 

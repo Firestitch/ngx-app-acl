@@ -1,4 +1,4 @@
-export { FsAppAclModule } from './app/fs-app-acl.module';
+
 
 export { FsAclRolesComponent } from './app/components/acl-roles/acl-roles.component';
 export { FsAclPermissionPopoverComponent } from './app/components/acl-permission-popover/acl-permission-popover.component';

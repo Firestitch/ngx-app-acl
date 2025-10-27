@@ -9,10 +9,10 @@ import {
 } from '@angular/core';
 
 import { MatButton } from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 
 import { list } from '@firestitch/common';
-import { FsListComponent, FsListConfig } from '@firestitch/list';
+import { FsListComponent, FsListConfig, FsListModule } from '@firestitch/list';
 import { FsMessage } from '@firestitch/message';
 
 import { forkJoin, Observable, of, Subject } from 'rxjs';
@@ -24,12 +24,53 @@ import { RoleConfig } from '../../interfaces';
 import { AclRoleAccesses } from './../../consts/acl-role-accesses';
 import { AclRole } from './../../interfaces/acl-role';
 import { FsAppAclService } from './../../services/app-acl.service';
+import { FormsModule } from '@angular/forms';
+import { FsFormModule } from '@firestitch/form';
+import { FsDialogModule } from '@firestitch/dialog';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatFormField, MatLabel, MatHint } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { FsLabelModule } from '@firestitch/label';
+import { FsRadioGroupModule } from '@firestitch/radiogroup';
+import { MatRadioButton } from '@angular/material/radio';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { FsMenuModule } from '@firestitch/menu';
+import { BulkOptionsFilterPipe } from '../../pipes/bulk-options-filter.pipe';
+import { AclRolePermissionAvailablePipe } from '../../pipes/acl-role-permission-available.pipe';
 
 
 @Component({
-  templateUrl: './acl-role.component.html',
-  styleUrls: ['./acl-role.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './acl-role.component.html',
+    styleUrls: ['./acl-role.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        FormsModule,
+        FsFormModule,
+        FsDialogModule,
+        MatDialogTitle,
+        CdkScrollable,
+        MatDialogContent,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        FsLabelModule,
+        FsRadioGroupModule,
+        MatRadioButton,
+        MatCheckbox,
+        MatHint,
+        MatSelect,
+        MatOption,
+        FsListModule,
+        FsMenuModule,
+        MatDialogActions,
+        MatButton,
+        MatDialogClose,
+        BulkOptionsFilterPipe,
+        AclRolePermissionAvailablePipe,
+    ],
 })
 export class FsAclRoleComponent implements OnInit, OnDestroy {
 
