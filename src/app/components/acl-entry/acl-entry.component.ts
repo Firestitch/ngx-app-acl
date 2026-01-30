@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { CdkScrollable } from '@angular/cdk/scrolling';
@@ -56,8 +56,8 @@ export class FsAclEntryComponent implements OnInit {
   private readonly _dialogRef = inject<MatDialogRef<FsAclEntryComponent>>(MatDialogRef);
   private readonly _message = inject(FsMessage);
   private readonly _data = inject<AclEntryData>(MAT_DIALOG_DATA);
-
-
+  private readonly _cdRef = inject(ChangeDetectorRef);
+  
   constructor() {
     const _data = this._data;
 
@@ -82,18 +82,17 @@ export class FsAclEntryComponent implements OnInit {
       this._appAclService.getIndexedLevels(),
     ])
       .subscribe(([aclRoles, levels]) => {
-        setTimeout(() => {
-          this.aclRoles = aclRoles;
-          this.indexedAclRoleLevels = levels;
+        this.aclRoles = aclRoles;
+        this.indexedAclRoleLevels = levels;
 
-          this.aclObjectRole = {
-            object: this.aclObjectEntry.object,
-            aclRoles: this.aclObjectEntry.aclEntries
-              .map((aclEntry: AclEntry) => {
-                return aclEntry.aclRole;
-              }),
-          };
-        });
+        this.aclObjectRole = {
+          object: this.aclObjectEntry.object,
+          aclRoles: this.aclObjectEntry.aclEntries
+            .map((aclEntry: AclEntry) => {
+              return aclEntry.aclRole;
+            }),
+        };
+        this._cdRef.markForCheck();
       });
   }
 

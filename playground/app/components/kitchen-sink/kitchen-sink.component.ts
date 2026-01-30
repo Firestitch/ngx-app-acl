@@ -1,18 +1,16 @@
-import { AclEntry } from './../../../../src/app/interfaces/acl-entry';
-import { map } from 'rxjs/operators';
-import { AclRole } from '@firestitch/package';
-import { Component, OnInit, inject } from '@angular/core';
-import { FsExampleComponent } from '@firestitch/example';
-import { FsMessage } from '@firestitch/message';
-import { Observable, of } from 'rxjs';
-import { AclObjectRole } from './../../../../src/app/interfaces/acl-object-role';
-import { AclObjectEntry } from './../../../../src/app/interfaces/acl-object-entry';
-import { AclRoleConfig } from 'src/app/interfaces/acl-role-config';
-import { RoleConfig } from 'src/app/interfaces';
-import { FsAclRolesComponent } from '../../../../src/app/components/acl-roles/acl-roles.component';
-import { FsAclEntriesComponent } from '../../../../src/app/components/acl-entries/acl-entries.component';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AclRole } from '@firestitch/package';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { RoleConfig } from 'src/app/interfaces';
+import { AclRoleConfig } from 'src/app/interfaces/acl-role-config';
+import { FsAclEntriesComponent } from '../../../../src/app/components/acl-entries/acl-entries.component';
 import { FsAclObjectRolesComponent } from '../../../../src/app/components/acl-object-roles/acl-object-roles.component';
+import { FsAclRolesComponent } from '../../../../src/app/components/acl-roles/acl-roles.component';
+import { AclEntry } from './../../../../src/app/interfaces/acl-entry';
+import { AclObjectEntry } from './../../../../src/app/interfaces/acl-object-entry';
+import { AclObjectRole } from './../../../../src/app/interfaces/acl-object-role';
 
 
 @Component({
@@ -23,9 +21,6 @@ import { FsAclObjectRolesComponent } from '../../../../src/app/components/acl-ob
     imports: [FsAclRolesComponent, FsAclEntriesComponent, FormsModule, FsAclObjectRolesComponent]
 })
 export class KitchenSinkComponent implements OnInit {
-  private exampleComponent = inject(FsExampleComponent);
-  private message = inject(FsMessage);
-
 
   public config = {};
   public aclObjectRole: AclObjectRole;
