@@ -10,8 +10,8 @@ import { FsFormModule } from '@firestitch/form';
 import { FsLabelModule } from '@firestitch/label';
 import { FsMessage } from '@firestitch/message';
 
-import { forkJoin } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { asyncScheduler, forkJoin } from 'rxjs';
+import { observeOn, tap } from 'rxjs/operators';
 
 import { FsAclObjectRolesComponent } from '../acl-object-roles/acl-object-roles.component';
 
@@ -74,18 +74,17 @@ export class FsAclEntryComponent implements OnInit {
   }
 
   public ngOnInit() {
-    forkJoin(
+    forkJoin([
       this._data.loadAclRoles({
         level: this.aclObjectEntry.level,
         environmentId: this.aclObjectEntry.environmentId || null,
       }),
       this._appAclService.getIndexedLevels(),
-    )
-      .subscribe(([
-        aclRoles,
-        levels,
-      ]) => {
-
+    ])
+      .pipe(
+        observeOn(asyncScheduler),
+      )
+      .subscribe(([aclRoles, levels]) => {
         this.aclRoles = aclRoles;
         this.indexedAclRoleLevels = levels;
 
