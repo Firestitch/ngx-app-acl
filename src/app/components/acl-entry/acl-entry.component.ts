@@ -10,8 +10,8 @@ import { FsFormModule } from '@firestitch/form';
 import { FsLabelModule } from '@firestitch/label';
 import { FsMessage } from '@firestitch/message';
 
-import { asyncScheduler, forkJoin } from 'rxjs';
-import { observeOn, tap } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { FsAclObjectRolesComponent } from '../acl-object-roles/acl-object-roles.component';
 
@@ -81,20 +81,19 @@ export class FsAclEntryComponent implements OnInit {
       }),
       this._appAclService.getIndexedLevels(),
     ])
-      .pipe(
-        observeOn(asyncScheduler),
-      )
       .subscribe(([aclRoles, levels]) => {
-        this.aclRoles = aclRoles;
-        this.indexedAclRoleLevels = levels;
+        setTimeout(() => {
+          this.aclRoles = aclRoles;
+          this.indexedAclRoleLevels = levels;
 
-        this.aclObjectRole = {
-          object: this.aclObjectEntry.object,
-          aclRoles: this.aclObjectEntry.aclEntries
-            .map((aclEntry: AclEntry) => {
-              return aclEntry.aclRole;
-            }),
-        };
+          this.aclObjectRole = {
+            object: this.aclObjectEntry.object,
+            aclRoles: this.aclObjectEntry.aclEntries
+              .map((aclEntry: AclEntry) => {
+                return aclEntry.aclRole;
+              }),
+          };
+        });
       });
   }
 
