@@ -1,21 +1,21 @@
-import { takeUntil, map } from 'rxjs/operators';
-import { Component, OnInit, ViewChild, OnDestroy, Input, inject } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { takeUntil } from 'rxjs/operators';
 
-import { Subject, Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
-import { sortBy, groupBy } from 'lodash-es';
+import { groupBy, sortBy } from 'lodash-es';
 
 import { FsListAction, FsListComponent, FsListConfig, FsListModule } from '@firestitch/list';
 import { FsPrompt } from '@firestitch/prompt';
 
-import { FsAppAclService } from '../../services/app-acl.service';
-import { AclEntryData } from '../../interfaces/acl-entry-data';
-import { AclEntry } from '../../interfaces/acl-entry';
-import { AclRole } from '../../interfaces/acl-role';
-import { AclObjectEntry } from '../../interfaces/acl-object-entry';
-import { FsAclEntryComponent } from '../acl-entry/acl-entry.component';
 import { FsBadgeModule } from '@firestitch/badge';
+import { AclEntry } from '../../interfaces/acl-entry';
+import { AclEntryData } from '../../interfaces/acl-entry-data';
+import { AclObjectEntry } from '../../interfaces/acl-object-entry';
+import { AclRole } from '../../interfaces/acl-role';
+import { FsAppAclService } from '../../services/app-acl.service';
+import { FsAclEntryComponent } from '../acl-entry/acl-entry.component';
 import { FsAclRolePopoverComponent } from '../acl-role-popover/acl-role-popover.component';
 
 

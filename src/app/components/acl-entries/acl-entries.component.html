@@ -4,21 +4,20 @@
       Context
     </ng-template>
     <ng-template
-      fs-list-cell
-      let-row="row">
+        fs-list-cell
+        let-row="row">
       @if (row.object) {
-        <div
-          class="fs-row.gap-sm">
+        <div class="fs-row.gap-sm">
           @if (row.object.imageUrl) {
             <fs-badge
               shape="circle"
-              image="{{ row.object.imageUrl }}">
+              [image]="row.object.imageUrl">
             </fs-badge>
           }
           <span>
             <div>
               <small>
-                {{ row.object.className }}
+                {{ row.object.class }}
               </small>
             </div>
             <a (click)="update(row)">
@@ -38,8 +37,8 @@
       {{ environmentLabel }}
     </ng-template>
     <ng-template
-      fs-list-cell
-      let-row="row">
+        fs-list-cell
+        let-row="row">
       {{ row.environment?.name }}
     </ng-template>
   </fs-list-column>
@@ -48,18 +47,16 @@
       Roles
     </ng-template>
     <ng-template
-      fs-list-cell
-      let-row="row">
+        fs-list-cell
+        let-row="row">
       <div class="fs-column">
         @for (aclEntry of row.aclEntries; track aclEntry) {
-          <div
-            div
-            >
+          <div div>
             @switch (row.level) {
               @case ('app') {
                 <fs-acl-role-popover
-                  [aclRole]="aclEntry.aclRole"
-                  objectName="App">
+                    [aclRole]="aclEntry.aclRole"
+                    objectName="App">
                   {{ aclEntry.aclRole.name }}
                 </fs-acl-role-popover>
               }
