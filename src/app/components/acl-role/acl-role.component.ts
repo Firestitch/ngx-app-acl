@@ -1,68 +1,69 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
+import { CdkScrollable } from '@angular/cdk/scrolling';
 import { MatButton } from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatOption } from '@angular/material/core';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
+import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatRadioButton } from '@angular/material/radio';
+import { MatSelect } from '@angular/material/select';
 
 import { list } from '@firestitch/common';
+import { FsFormModule } from '@firestitch/form';
 import { FsListComponent, FsListConfig, FsListModule } from '@firestitch/list';
 import { FsMessage } from '@firestitch/message';
 
-import { forkJoin, Observable, of, Subject } from 'rxjs';
+import { FsDialogModule } from '@firestitch/dialog';
+import { Observable, Subject, forkJoin, of } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 
 import { AclRoleAccess } from '../../enums/acl-role-access';
 import { RoleConfig } from '../../interfaces';
 
+import { FsLabelModule } from '@firestitch/label';
+import { FsMenuModule } from '@firestitch/menu';
+import { FsRadioGroupModule } from '@firestitch/radiogroup';
 import { AclRoleAccesses } from './../../consts/acl-role-accesses';
 import { AclRole } from './../../interfaces/acl-role';
 import { FsAppAclService } from './../../services/app-acl.service';
-import { FormsModule } from '@angular/forms';
-import { FsFormModule } from '@firestitch/form';
-import { FsDialogModule } from '@firestitch/dialog';
-import { CdkScrollable } from '@angular/cdk/scrolling';
-import { MatFormField, MatLabel, MatHint } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
-import { FsLabelModule } from '@firestitch/label';
-import { FsRadioGroupModule } from '@firestitch/radiogroup';
-import { MatRadioButton } from '@angular/material/radio';
-import { MatCheckbox } from '@angular/material/checkbox';
-import { MatSelect } from '@angular/material/select';
-import { MatOption } from '@angular/material/core';
-import { FsMenuModule } from '@firestitch/menu';
-import { BulkOptionsFilterPipe } from '../../pipes/bulk-options-filter.pipe';
+
 import { AclRolePermissionAvailablePipe } from '../../pipes/acl-role-permission-available.pipe';
+import { BulkOptionsFilterPipe } from '../../pipes/bulk-options-filter.pipe';
 
 
 @Component({
-    templateUrl: './acl-role.component.html',
-    styleUrls: ['./acl-role.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        FormsModule,
-        FsFormModule,
-        FsDialogModule,
-        MatDialogTitle,
-        CdkScrollable,
-        MatDialogContent,
-        MatFormField,
-        MatLabel,
-        MatInput,
-        FsLabelModule,
-        FsRadioGroupModule,
-        MatRadioButton,
-        MatCheckbox,
-        MatHint,
-        MatSelect,
-        MatOption,
-        FsListModule,
-        FsMenuModule,
-        MatDialogActions,
-        MatButton,
-        MatDialogClose,
-        BulkOptionsFilterPipe,
-        AclRolePermissionAvailablePipe,
-    ],
+  templateUrl: './acl-role.component.html',
+  styleUrls: ['./acl-role.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    FormsModule,
+    FsFormModule,
+    FsDialogModule,
+    MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    FsLabelModule,
+    FsRadioGroupModule,
+    MatRadioButton,
+    MatCheckbox,
+    MatHint,
+    MatSelect,
+    MatOption,
+    FsListModule,
+    FsMenuModule,
+    MatDialogActions,
+    MatButton,
+    MatDialogClose,
+    BulkOptionsFilterPipe,
+    AclRolePermissionAvailablePipe,
+  ],
 })
 export class FsAclRoleComponent implements OnInit, OnDestroy {
   private readonly _data = inject(MAT_DIALOG_DATA);

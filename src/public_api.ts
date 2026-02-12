@@ -1,12 +1,12 @@
 
 
-export { FsAclRolesComponent } from './app/components/acl-roles/acl-roles.component';
-export { FsAclPermissionPopoverComponent } from './app/components/acl-permission-popover/acl-permission-popover.component';
-export { FsAclRoleComponent } from './app/components/acl-role/acl-role.component';
 export { FsAclEntriesComponent } from './app/components/acl-entries/acl-entries.component';
-export { FsAclRolePopoverComponent } from './app/components/acl-role-popover/acl-role-popover.component';
-export { FsAclObjectRolesComponent } from './app/components/acl-object-roles/acl-object-roles.component';
 export { FsAclEntryComponent } from './app/components/acl-entry/acl-entry.component';
+export { FsAclObjectRolesComponent } from './app/components/acl-object-roles/acl-object-roles.component';
+export { FsAclPermissionPopoverComponent } from './app/components/acl-permission-popover/acl-permission-popover.component';
+export { FsAclRolePopoverComponent } from './app/components/acl-role-popover/acl-role-popover.component';
+export { FsAclRoleComponent } from './app/components/acl-role/acl-role.component';
+export { FsAclRolesComponent } from './app/components/acl-roles/acl-roles.component';
 
 export { FsAppAclService } from './app/services/app-acl.service';
 
@@ -22,3 +22,5 @@ export { AppAclConfig } from './app/interfaces/app-acl-config';
 export { NameValue } from './app/interfaces/name-value';
 
 export { FS_APP_ACL_CONFIG } from './app/injectors/app-acl-config.injector';
+
+export { FsAppAclModule } from './app/fs-app-acl.module';
