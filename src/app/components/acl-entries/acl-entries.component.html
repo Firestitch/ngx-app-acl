@@ -50,7 +50,7 @@
         fs-list-cell
         let-row="row">
       <div class="fs-column">
-        @for (aclEntry of row.aclEntries; track aclEntry) {
+        @for (aclEntry of row.aclEntries; track aclEntry.id) {
           <div div>
             @switch (row.level) {
               @case ('app') {

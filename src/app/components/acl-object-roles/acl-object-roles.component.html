@@ -1,5 +1,5 @@
 @if (!multiple) {
-  @for (aclObjectRole of aclObjectRoles; track aclObjectRole) {
+  @for (aclObjectRole of aclObjectRoles; track aclObjectRole.object?.id) {
     <fs-checkbox-group
       [(ngModel)]="aclObjectRole.aclRoles"
       (ngModelChange)="changed()"
@@ -9,7 +9,7 @@
       [label]="rolesLabel"
       [fsFormRequired]="required"
       orientation="vertical">
-      @for (aclRole of aclRoles; track aclRole) {
+      @for (aclRole of aclRoles; track aclRole.id) {
         <mat-checkbox [disabled]="disabled" [value]="$any(aclRole)">
           {{ aclRole.name }}
         </mat-checkbox>
@@ -28,7 +28,7 @@
         <small>{{rolesLabel}}</small>
       </td>
     </tr>
-    @for (aclObjectRole of aclObjectRoles; track aclObjectRole) {
+    @for (aclObjectRole of aclObjectRoles; track aclObjectRole.object?.id) {
       <tr>
         <td>{{aclObjectRole.object.name}}</td>
         <td>
@@ -40,7 +40,7 @@
               [compareWith]="compareAclRole"
               (ngModelChange)="changed()"
               name="aclRole_{{ aclObjectRole.object.id }}">
-              @for (aclRole of aclRoles; track aclRole) {
+              @for (aclRole of aclRoles; track aclRole.id) {
                 <mat-option [value]="aclRole">
                   {{ aclRole.name }}
                 </mat-option>

@@ -18,7 +18,7 @@
     <fs-list-column title="Permissions">
       <ng-template fs-list-cell let-row="row">
         <div class="permissions">
-          @for (permission of row.permissions; track permission) {
+          @for (permission of row.permissions; track permission.id) {
             @if (permission.access) {
               <span class="permission">
                 <acl-permission-popover [permission]="permission">{{permission.name}}</acl-permission-popover>
