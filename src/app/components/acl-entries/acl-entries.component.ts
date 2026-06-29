@@ -1,15 +1,17 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+
 import { MatDialog } from '@angular/material/dialog';
-import { takeUntil } from 'rxjs/operators';
 
-import { Observable, Subject } from 'rxjs';
-
-import { groupBy, sortBy } from 'lodash-es';
-
+import { FsBadgeModule } from '@firestitch/badge';
 import { FsListAction, FsListComponent, FsListConfig, FsListModule } from '@firestitch/list';
 import { FsPrompt } from '@firestitch/prompt';
 
-import { FsBadgeModule } from '@firestitch/badge';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { groupBy, sortBy } from 'lodash-es';
+
+
 import { AclEntry } from '../../interfaces/acl-entry';
 import { AclEntryData } from '../../interfaces/acl-entry-data';
 import { AclObjectEntry } from '../../interfaces/acl-object-entry';
@@ -20,17 +22,13 @@ import { FsAclRolePopoverComponent } from '../acl-role-popover/acl-role-popover.
 
 
 @Component({
-    selector: 'fs-acl-entries',
-    templateUrl: './acl-entries.component.html',
-    styleUrls: ['./acl-entries.component.scss'],
-    standalone: true,
-    imports: [FsListModule, FsBadgeModule, FsAclRolePopoverComponent]
+  selector: 'fs-acl-entries',
+  templateUrl: './acl-entries.component.html',
+  styleUrls: ['./acl-entries.component.scss'],
+  standalone: true,
+  imports: [FsListModule, FsBadgeModule, FsAclRolePopoverComponent],
 })
 export class FsAclEntriesComponent implements OnInit, OnDestroy {
-  private readonly _appAclService = inject(FsAppAclService);
-  private readonly _dialog = inject(MatDialog);
-  private _confirm = inject(FsPrompt);
-
 
   @Input() public loadAclEntries: (query: any) => Observable<AclEntry[]>;
   @Input() public loadAclRoles: (query: any) => Observable<AclRole[]>;
@@ -38,6 +36,7 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
   @Input() public environmentShow = true;
   @Input() public environmentLabel = 'Environment';
   @Input() public environmentKey = 'environment';
+  @Input() public required = true;
   @Input() public actions: FsListAction[] = [];
 
   @ViewChild(FsListComponent)
@@ -47,10 +46,13 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
   public permissions: any[] = [];
 
   private _destroy$ = new Subject();
+  private readonly _appAclService = inject(FsAppAclService);
+  private readonly _dialog = inject(MatDialog);
+  private _confirm = inject(FsPrompt);
 
   public ngOnInit(): void {
     this._appAclService.getPermissions()
-      .subscribe(response => {
+      .subscribe((response) => {
         this.permissions = response;
       });
 
@@ -76,8 +78,8 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
                     this.aclEntriesList.reload();
                   });
               });
-          }
-        }
+          },
+        },
       ],
       fetch: () => {
         return new Observable((observer) => {
@@ -101,6 +103,7 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
                 .filter((aclEntry) => (!!aclEntry[this.environmentKey]))
                 .reduce((items, item) => {
                   const environment = item[this.environmentKey];
+
                   return {
                     ...items,
                     [environment.id]: environment,
@@ -109,12 +112,14 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
 
               const groupedAclEntries = groupBy(aclEntries, (item) => {
                 const environmentId = (item[this.environmentKey])?.id;
+
                 return [item.aclRole.level, environmentId, item.objectId];
               });
 
               let aclObjectEntries: AclObjectEntry[] = Object.keys(groupedAclEntries)
                 .reduce((accum, key: any) => {
                   const parts = key.split(',');
+
                   return [
                     ...accum,
                     {
@@ -123,7 +128,7 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
                       [`${this.environmentKey}Id`]: parts[1] ? parseInt(parts[1]) : null,
                       [this.environmentKey]: environments[parts[1]],
                       aclEntries: groupedAclEntries[key],
-                    }
+                    },
                   ];
                 }, []);
 
@@ -157,13 +162,13 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
   public update(aclObjectEntry: AclObjectEntry) {
     const data: AclEntryData = {
       aclObjectEntry,
-      required: false,
+      required: this.required,
       loadAclRoles: this.loadAclRoles,
-      saveAclObjectEntry: this.saveAclObjectEntry
-    }
+      saveAclObjectEntry: this.saveAclObjectEntry,
+    };
 
     this._dialog.open(FsAclEntryComponent, {
-      data: data
+      data: data,
     })
       .afterClosed()
       .pipe(
