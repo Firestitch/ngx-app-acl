@@ -53,7 +53,7 @@
                   label="Level"
                   orientation="vertical"
                   name="level">
-                  @for (item of aclLevels; track item.value) {
+                  @for (item of aclLevels; track item) {
                     <mat-radio-button
                       [value]="item.value"
                       [disabled]="!!aclRole.protected">
@@ -77,7 +77,7 @@
                 </mat-checkbox>
               </fs-label-field>
             }
-            @for (roleConfig of roleConfigs; track roleConfig.name) {
+            @for (roleConfig of roleConfigs; track roleConfig) {
               <div
                 class="fs-column"
                 >
@@ -107,7 +107,7 @@
                       [required]="roleConfig.required"
                       [disabled]="disabled"
                       [placeholder]="roleConfig.label">
-                      @for (item of roleConfig.values; track item.value) {
+                      @for (item of roleConfig.values; track item) {
                         <mat-option
                           [value]="item.value">
                           {{ item.name }}
@@ -160,7 +160,7 @@
                     align="right">
                     @if (!aclRole.allPermissions && !disabled) {
                       <fs-menu>
-                        @for (access of AclRoleAccesses | builkOptionsFilter: groupChildren; track access.value) {
+                        @for (access of AclRoleAccesses | builkOptionsFilter: groupChildren; track access) {
                           <ng-template
                             fs-menu-item
                             (click)="bulkChange(access.value, groupChildren, group)">
@@ -189,7 +189,7 @@
                             required
                             [name]="'access-' + permission.value"
                             (ngModelChange)="permissionChange()">
-                            @for (access of AclRoleAccesses; track access.value) {
+                            @for (access of AclRoleAccesses; track access) {
                               @if (access.value === 0 || permission.accesses.indexOf(access.value) !== -1) {
                                 <mat-option
                                   [value]="access.value">

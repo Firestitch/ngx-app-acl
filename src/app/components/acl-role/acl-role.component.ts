@@ -66,12 +66,6 @@ import { BulkOptionsFilterPipe } from '../../pipes/bulk-options-filter.pipe';
   ],
 })
 export class FsAclRoleComponent implements OnInit, OnDestroy {
-  private readonly _data = inject(MAT_DIALOG_DATA);
-  private readonly _appAclService = inject(FsAppAclService);
-  private readonly _dialogRef = inject<MatDialogRef<FsAclRoleComponent>>(MatDialogRef);
-  private readonly _message = inject(FsMessage);
-  private _cdRef = inject(ChangeDetectorRef);
-
 
   @ViewChild(FsListComponent)
   public list: FsListComponent;
@@ -98,6 +92,11 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
   public permissionSelectable: (permission: any, access?: number) => boolean;
 
   private _destroy$ = new Subject();
+  private readonly _data = inject(MAT_DIALOG_DATA);
+  private readonly _appAclService = inject(FsAppAclService);
+  private readonly _dialogRef = inject<MatDialogRef<FsAclRoleComponent>>(MatDialogRef);
+  private readonly _message = inject(FsMessage);
+  private _cdRef = inject(ChangeDetectorRef);
 
   public ngOnInit(): void {
     forkJoin(

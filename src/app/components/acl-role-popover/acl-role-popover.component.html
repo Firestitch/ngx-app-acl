@@ -13,7 +13,7 @@
     }
   </div>
   @if (permissions.length) {
-    @for (permission of permissions; track permission.name) {
+    @for (permission of permissions; track permission) {
       <div class="permission">
         <div>
           {{ permission.name }}

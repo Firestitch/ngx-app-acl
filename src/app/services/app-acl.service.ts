@@ -15,8 +15,8 @@ import { AppAclConfig } from './../interfaces/app-acl-config';
   providedIn: 'root',
 })
 export class FsAppAclService {
-  private _appAclConfig = inject<AppAclConfig>(FS_APP_ACL_CONFIG);
 
+  private _appAclConfig = inject<AppAclConfig>(FS_APP_ACL_CONFIG);
   private _permissions$: Observable<AclPermission[]>;
   private _levels$: Observable<AclLevel[]>;
 
