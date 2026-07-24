@@ -153,11 +153,20 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
           });
         }
 
+        this._updatePermissions();
+
+        // A new role defaults to all-permissions; if the acting user cannot
+        // grant every permission at this level, start it un-checked so they
+        // build the role from the permissions they can grant, rather than being
+        // trapped with a checked box that is also disabled and cannot be saved.
+        if (!this.aclRole.id && this.aclRole.allPermissions && !this.allPermissionsSelectable()) {
+          this.aclRole.allPermissions = false;
+        }
+
         if (this.aclRole.allPermissions) {
           this._applyMaxPermissionAccess();
         }
 
-        this._updatePermissions();
         this._updateRoleConfigs();
 
         this._cdRef.markForCheck();
