@@ -71,7 +71,7 @@
                 <mat-checkbox
                   [(ngModel)]="aclRole.allPermissions"
                   (ngModelChange)="allPermissionsChange($event)"
-                  [disabled]="!!aclRole.protected || disabled"
+                  [disabled]="!!aclRole.protected || disabled || !allPermissionsSelectable()"
                   name="allPermissions">
                   Enable
                 </mat-checkbox>
@@ -179,7 +179,9 @@
                         {{ indexedAccesses[aclRolePermissions[permission.value]] }}
                       </span>
                     } @else {
-                      @if (permission|aclRolePermissionAvailable:aclRolePermissions) {
+                      @if (!isPermissionSelectable(permission)) {
+                        Not permitted
+                      } @else if (permission|aclRolePermissionAvailable:aclRolePermissions) {
                         <mat-form-field class="form-field-padless">
                           <mat-select
                             [(ngModel)]="aclRolePermissions[permission.value]"

@@ -41,6 +41,14 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
   @Input()
   public disabledAclRole: (aclRole: AclRole) => boolean;
 
+  /**
+   * Optional guard letting the consuming project decide whether a permission (at
+   * a given access) may be granted on a role. Returns true = selectable. When
+   * not provided, everything is selectable, so existing consumers are unchanged.
+   */
+  @Input()
+  public permissionSelectable: (permission: any, access?: number) => boolean;
+
   @ViewChildren(FsListComponent)
   public list = new QueryList<FsListComponent>();
 
@@ -83,7 +91,7 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
         disabled: this.disabledAclRole
           ? this.disabledAclRole(aclRole)
           : false,
-
+        permissionSelectable: this.permissionSelectable,
       },
     })
       .afterClosed()

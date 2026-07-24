@@ -95,6 +95,7 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
   public aclRolePermissions = {};
   public loadRoleConfigs: (aclRole: AclRole, query) => Observable<RoleConfig[]>;
   public disabled: boolean;
+  public permissionSelectable: (permission: any, access?: number) => boolean;
 
   private _destroy$ = new Subject();
 
@@ -112,6 +113,7 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
         this.permissions = aclPermissions;
         this.aclLevels = this._data.aclLevels;
         this.disabled = this._data.disabled;
+        this.permissionSelectable = this._data.permissionSelectable;
 
         this.indexedAclLevels = list(this.aclLevels, 'name', 'value');
         this.indexedAccesses = list(AclRoleAccesses, 'name', 'value');
@@ -201,7 +203,9 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
         const access = permission.accesses
           .find((access) => value === access);
 
-        if(access || !value) {
+        // Setting None (0) is always allowed (it removes access); granting a
+        // real access is skipped for permissions the consumer marks unselectable.
+        if((access || !value) && (!value || this.isPermissionSelectable(permission))) {
           this.aclRolePermissions[permission.value] = value;
         }
       });
@@ -282,6 +286,28 @@ export class FsAclRoleComponent implements OnInit, OnDestroy {
     } else {
       this._applyNonePermissionAccess();
     }
+  }
+
+  /**
+   * Whether a permission may be granted at the given access. Defaults to true
+   * (selectable) when the consuming project supplies no permissionSelectable
+   * guard, so behaviour is unchanged for existing callers.
+   */
+  public isPermissionSelectable(permission: any, access?: number): boolean {
+    return !this.permissionSelectable
+      || this.permissionSelectable(permission, access);
+  }
+
+  /**
+   * "All permissions" is only offerable when every permission at the current
+   * level is itself selectable (enabling it would grant them all). Defaults to
+   * true when no guard is supplied.
+   */
+  public allPermissionsSelectable(): boolean {
+    return !this.permissionSelectable
+      || this.levelPermissions.every((permission) => {
+        return this.isPermissionSelectable(permission);
+      });
   }
 
   public ngOnDestroy(): void {
