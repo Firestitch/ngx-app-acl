@@ -44,6 +44,7 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
 
   public aclEntriesConfig: FsListConfig = null;
   public permissions: any[] = [];
+  public indexedAclRoleLevels: Record<string, string> = {};
 
   private _destroy$ = new Subject();
   private readonly _appAclService = inject(FsAppAclService);
@@ -54,6 +55,11 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
     this._appAclService.getPermissions()
       .subscribe((response) => {
         this.permissions = response;
+      });
+
+    this._appAclService.getIndexedLevels()
+      .subscribe((levels) => {
+        this.indexedAclRoleLevels = levels;
       });
 
     this.aclEntriesConfig = {
@@ -132,8 +138,10 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
                   ];
                 }, []);
 
+              // Only an App grant fills the App row. A grant at another level can also
+              // have no object, and it is a row of its own
               const hasApp = aclObjectEntries.some((item) => {
-                return item.aclEntries.some((entry) => {
+                return item.level === 'app' && item.aclEntries.some((entry) => {
                   return !entry.objectId;
                 });
               });
@@ -147,9 +155,12 @@ export class FsAclEntriesComponent implements OnInit, OnDestroy {
                 });
               }
 
-              aclObjectEntries = sortBy(aclObjectEntries, (item: AclObjectEntry) => {
-                return item.object ? item.level : '';
-              });
+              // Rows with no object first, App leading them, then object rows by level
+              aclObjectEntries = sortBy(aclObjectEntries, [
+                (item: AclObjectEntry) => !!item.object,
+                (item: AclObjectEntry) => item.level !== 'app',
+                (item: AclObjectEntry) => item.level,
+              ]);
 
               observer.next({ data: aclObjectEntries });
               observer.complete();

@@ -27,7 +27,7 @@
         </div>
       } @else {
         <a (click)="update(row)">
-          App
+          {{ indexedAclRoleLevels[row.level] ?? row.level }}
         </a>
       }
     </ng-template>
@@ -52,21 +52,16 @@
       <div class="fs-column">
         @for (aclEntry of row.aclEntries; track aclEntry) {
           <div div>
-            @switch (row.level) {
-              @case ('app') {
-                <fs-acl-role-popover
-                    [aclRole]="aclEntry.aclRole"
-                    objectName="App">
-                  {{ aclEntry.aclRole.name }}
-                </fs-acl-role-popover>
-              }
-              @default {
-                @if (row.object) {
-                  <fs-acl-role-popover [aclRole]="aclEntry.aclRole">
-                    {{ aclEntry.aclRole.name }}
-                  </fs-acl-role-popover>
-                }
-              }
+            @if (row.object) {
+              <fs-acl-role-popover [aclRole]="aclEntry.aclRole">
+                {{ aclEntry.aclRole.name }}
+              </fs-acl-role-popover>
+            } @else {
+              <fs-acl-role-popover
+                  [aclRole]="aclEntry.aclRole"
+                  [objectName]="indexedAclRoleLevels[row.level] ?? row.level">
+                {{ aclEntry.aclRole.name }}
+              </fs-acl-role-popover>
             }
           </div>
         }
