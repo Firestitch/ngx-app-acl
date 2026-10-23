@@ -42,6 +42,14 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
   public disabledAclRole: (aclRole: AclRole) => boolean;
 
   /**
+   * Whether the list shows its Create button. A consumer whose user may only
+   * read the roles passes false. Defaults to true, so existing consumers are
+   * unchanged.
+   */
+  @Input()
+  public showCreate = true;
+
+  /**
    * Optional guard letting the consuming project decide whether a permission (at
    * a given access) may be granted on a role. Returns true = selectable. When
    * not provided, everything is selectable, so existing consumers are unchanged.
@@ -141,6 +149,7 @@ export class FsAclRolesComponent implements OnInit, OnDestroy {
             this.openDialog();
           },
           label: 'Create',
+          show: () => this.showCreate,
         },
       ],
       rowActions: [
